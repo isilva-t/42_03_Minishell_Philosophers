@@ -50,6 +50,15 @@ typedef struct s_philo
 	time_t			last_meal;
 }	t_philo;
 
+typedef struct	s_args
+{
+	unsigned int	nb_philos;
+	unsigned int	time_to_die;
+	unsigned int	time_to_eat;
+	unsigned int	time_to_sleep;
+	unsigned int	nb_must_eat;
+	int				error_philo;
+}	t_args;
 
 typedef enum e_status
 {
@@ -62,8 +71,14 @@ typedef enum e_status
 }	t_status;
 
 
+
+// 10_Argument check
+int	ft_first_args_check_have_error(int ac, char **av);
+
+
 //utils
 int				ft_isdigit(int c);
 unsigned int	ft_atoui(const char *nptr);
+void			ft_print_user_manual();
 
 #endif
