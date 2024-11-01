@@ -44,7 +44,9 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(HEADER)
-	$(CC) $(CFLAGS) $(EFLAGS)
+	$(CC) $(CFLAGS) $(EFLAGS) $(OBJS) -o $(NAME)
+
+
 
 .PHONY: clean
 clean:
