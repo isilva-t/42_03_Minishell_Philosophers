@@ -30,7 +30,8 @@ vpath %.c src
 
 HEADER = philo.h
 SRCS = \
-	  src/main.c
+	  src/00_main.c \
+	  src/81_utils.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -47,6 +48,9 @@ $(NAME): $(OBJS) $(HEADER)
 	@echo "$(GREEN)Compilation $(CLR_RMV)of $(YELLOW)$(NAME) $(CLR_RMV)..."
 	@$(CC) $(CFLAGS) $(EFLAGS) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)$(NAME) created[0m ✅"
+
+te:	all
+	@echo -n "./philo "; read args; ./philo $$args
 
 
 .PHONY: clean
