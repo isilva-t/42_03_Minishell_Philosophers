@@ -44,8 +44,9 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(HEADER)
-	$(CC) $(CFLAGS) $(EFLAGS) $(OBJS) -o $(NAME)
-
+	@echo "$(GREEN)Compilation $(CLR_RMV)of $(YELLOW)$(NAME) $(CLR_RMV)..."
+	@$(CC) $(CFLAGS) $(EFLAGS) $(OBJS) -o $(NAME)
+	@echo "$(GREEN)$(NAME) created[0m ✅"
 
 
 .PHONY: clean
