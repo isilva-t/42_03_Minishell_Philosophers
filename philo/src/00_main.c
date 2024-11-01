@@ -38,15 +38,20 @@ int	ft_first_args_check_have_error(int ac, char **av)
 
 	rt = 0;
 	if (ac < 5 || ac > 6)
-	{
-		rt = printf("Number of arguments incorrect!\n");
-	}
+		rt = printf("\nNumber of arguments incorrect!\n");
 	else if (ft_have_only_digits_in_numbers(av) == FALSE)
-	{
-		rt = printf("Only acceptable numbers on arguments!\n");
-	}
+		rt = printf("Only acceptable positive numbers on arguments!\n");
 	if (rt > 0)
+	{
+		printf("Use between FOUR or FIVE arguments. ");
+		printf("Fifth argument is optional.\n");
+		printf("Arguments description:\n[0] prog_name\n");
+		printf("[1] number_of_philos\n");
+		printf("[2] time_to_die\n[3] time_to_eat\n[4] time_to_sleep\n");
+		printf("[5] number_of_times_each_philosopher_must_eat\n\n");
+		printf("Example:\n./philo 5 800 200 200 7\n\n");
 		return (TRUE);
+	}
 	return (FALSE);
 }
 
