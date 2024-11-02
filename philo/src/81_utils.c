@@ -7,13 +7,15 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-unsigned int	ft_atoui(const char *nptr)
+long	ft_atol_positive(const char *nptr)
 {
-	unsigned int	i;
-	unsigned int	num;
+	int	i;
+	long	num;
 
 	i = 0;
 	num = 0;
+	while (nptr[i] && nptr[i] == '+')
+		i++;
 	while (nptr[i] && nptr[i] >= '0' && nptr[i] <= '9')
 		num = num * 10 + nptr[i++] - '0';
 	return (num);
@@ -21,8 +23,9 @@ unsigned int	ft_atoui(const char *nptr)
 
 void	ft_print_user_manual()
 {
-	printf("Use between FOUR or FIVE arguments. ");
+	printf("\nTo start the dinner, use between FOUR or FIVE arguments.\n");
 	printf("Fifth argument is optional.\n");
+	printf("Do not use negative numbers, or above INT_MAX.\n");
 	printf("Arguments description:\n");
 	printf("[0] prog_name\n");
 	printf("[1] number_of_philos\n");
