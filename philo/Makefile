@@ -31,7 +31,9 @@ vpath %.c src
 HEADER = philo.h
 SRCS = \
 	  src/00_main.c \
+	  src/01_init.c \
 	  src/11_first_args_check.c \
+	  src/21_parse_data.c \
 	  src/81_utils.c
 
 OBJS = $(SRCS:.c=.o)

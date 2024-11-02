@@ -70,10 +70,14 @@ typedef enum e_status
 	GOT_FORK_2 = 5
 }	t_status;
 
-
+// init vars
+void	ft_init_variables(t_args *val);
 
 // 10_Argument check
 int	ft_first_args_check_have_error(int ac, char **av);
+
+// 20_parse data
+int	ft_parse_data_and_check_error(char **av, t_args *val);
 
 
 //utils

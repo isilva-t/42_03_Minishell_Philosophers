@@ -33,6 +33,8 @@ void	ft_print_user_manual()
 	printf("[3] time_to_eat\n");
 	printf("[4] time_to_sleep\n");
 	printf("[5] number_of_times_each_philosopher_must_eat\n\n");
-	printf("Example:\n./philo 5 800 200 200 7\n\n");
+	printf("Examples (with or without fifth argument:\n");
+	printf("./philo 5 800 200 200 7\n");
+	printf("./philo 2 800 200 200\n\n");
 }
 
