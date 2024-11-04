@@ -31,6 +31,7 @@ int	main(int ac, char **av)
 	return (0);
 
 
+
 	printf("before thread\n");
 	i = 0;
 	while (i++ < 4)

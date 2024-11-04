@@ -18,7 +18,7 @@ CYAN	= \033[1;36m
 NAME = philo
 CC = cc
 CFLAGS = -Iincludes
-EFLAGS = -Wall -Wextra -Werror
+EFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
 RM	    = rm -rf
 
 ##############################
