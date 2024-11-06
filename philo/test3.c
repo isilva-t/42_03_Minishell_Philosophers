@@ -2,17 +2,19 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <stdlib.h>
+#include <time.h>
 
-#define SIZE	1000000
+int	n_td;
+int	repeat_loop;
+
+#define SIZE	1999999
 #define MID		(SIZE / 2)
 
 typedef struct s_data
 {
 	pthread_mutex_t mute;
-	int sum;
+	long sum;
 	int	*read;
-	int	n_workers;
-	int	count;
 }	t_data;
 
 
@@ -22,7 +24,7 @@ typedef struct s_work
 	int id;
 	pthread_mutex_t	*mute_sum;
 	t_data *d;
-	int		td_sum;
+	long		td_sum;
 }	t_work;
 
 t_work	**do_work_info(int j, t_data *d)
@@ -53,46 +55,44 @@ t_work	**do_work_info(int j, t_data *d)
 }
 
 
-#define N_TD	2
-#define HALF	1
-#define MUTEX_ENABLE 1
 
 
 void	*routine(void *arg)
 {
 	t_work	*w;
+	int	i;
+	int	reset_i;
+	int	j;
 
 	w = (t_work *)arg;
 
+	i = -1;
+	j = -1;
 
-	pthread_mutex_lock(&w->d->mute);
-	while (++w->d->count < SIZE)
+	while (i != w->id)
+		i++;
+	reset_i = i;
+
+	while (i < SIZE)
 	{
-		pthread_mutex_unlock(&w->d->mute);
-
-		pthread_mutex_lock(&w->d->mute);
-		// if (w->id >= HALF)
-		// {
-		// 	w->d->sum += w->d->read[w->d->count + MID];
-		// 	w->td_sum += w->d->read[w->d->count + MID];
-		// }
-		// else
-		// {
-			w->d->sum += w->d->read[w->d->count];
-			w->td_sum += w->d->read[w->d->count];
-		//}
-
-		pthread_mutex_unlock(&w->d->mute);
-
-		pthread_mutex_lock(&w->d->mute);
+		w->td_sum += w->d->read[i];
+		i += n_td;
+		if (i >= SIZE & j < repeat_loop)
+		{
+			j++;
+			i = reset_i;
+		}
 	}
+	pthread_mutex_lock(&w->d->mute);
+	w->d->sum += w->td_sum;
+	pthread_mutex_unlock(&w->d->mute);
 
 	return (NULL);
 }
 
 
 
-int main(void)
+int main(int ac, char **av)
 {
 	t_work **w;
 	t_data	d;
@@ -100,41 +100,54 @@ int main(void)
 	int j;
 	int array[SIZE];
 
-	i = 0;
-	j = 0;
-	while (i < SIZE)
+	if (ac == 3)
 	{
-		if (i >= MID)
-			j = 1;
-		array[i] = 1 + j;
-		i++;
+		n_td = atoi(av[1]);
+		repeat_loop = atoi(av[2]);
+		i = 0;
+		j = 0;
+		while (i < SIZE)
+		{
+			if (i >= MID)
+				j = 3;
+			array[i] = 1 + j;
+			i++;
+		}
+		pthread_mutex_init(&d.mute, NULL);
+		d.read = array;
+		d.sum = 0;
+		
+		w = do_work_info(n_td, &d);
+		if (!w)
+			return (1);
+		i = -1;
+		while (++i < n_td)
+			pthread_create(&w[i]->td, NULL, &routine, (void *)w[i]);
+
+		printf("lets do the party!\n");
+
+		while (i-- > 0)
+			pthread_join(w[i]->td, NULL);
+
+		printf("sum: %ld \n", d.sum);
+
+		i = -1;
+		while (++i < n_td)
+		{
+			if (i % 2 == 0)
+			{
+				printf("\n");
+			}
+		 	printf("TD %d sum: %ld", w[i]->id, w[i]->td_sum);
+		}
+		printf("\n");
+		i = 0;
+		pthread_mutex_destroy(&d.mute);
+
+		while (i < n_td)
+			free(w[i++]);
+		free(w);
 	}
-	pthread_mutex_init(&d.mute, NULL);
-	d.read = array;
-	d.sum = 0;
-	d.n_workers = N_TD;
-	d.count = -1;
-	
-	w = do_work_info(N_TD, &d);
-	if (!w)
-		return (1);
-	i = -1;
-	while (++i < N_TD)
-		pthread_create(&w[i]->td, NULL, &routine, (void *)w[i]);
-
-	printf("lets do the party!\n");
-
-	while (i-- > 0)
-		pthread_join(w[i]->td, NULL);
-	
-	printf("sum: %d \n", d.sum);
-	i = -1;
-	while (++i < N_TD)
-		printf("Thread %d handle this sum: %d\n", w[i]->id, w[i]->td_sum);
-	i = 0;
-	pthread_mutex_destroy(&d.mute);
-	while (i < N_TD)
-		free(w[i++]);
-	free(w);
-
+	else
+		printf("Two arguments required: [1] nb_threads, [2] n_loop_repeats\n");
 }
