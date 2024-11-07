@@ -37,6 +37,9 @@ SRCS = \
 	  src/01_init.c \
 	  src/11_first_args_check.c \
 	  src/21_parse_data.c \
+	  src/31_create_philos_mem.c \
+	  src/34_philo_check_in.c \
+	  src/41_let_the_game_begin.c \
 	  src/81_utils.c
 
 OBJS = $(SRCS:.c=.o)
@@ -55,7 +58,7 @@ $(NAME): $(OBJS) $(HEADER)
 	@$(CC) $(CFLAGS) $(EFLAGS) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)$(NAME) created[0m ✅"
 
-te:	all
+te:	re
 	@echo -n "./philo "; read args; ./philo $$args
 
 

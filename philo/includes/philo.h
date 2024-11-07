@@ -6,14 +6,13 @@
 /*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 11:49:51 by isilva-t          #+#    #+#             */
-/*   Updated: 2024/11/07 11:51:01 by isilva-t         ###   ########.fr       */
+/*   Updated: 2024/11/07 14:08:27 by isilva-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <bits/pthreadtypes.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -30,7 +29,7 @@
 # define EAT "is eating"
 # define SLEEP "is sleeping"
 # define THINK "is thinking"
-# define DIE "DIED"
+# define DIE "died"
 # define LEFT 0
 # define RIGHT 1
 
@@ -58,6 +57,7 @@ typedef struct	s_args
 {
 	pthread_mutex_t	mtx_fork_1;
 	pthread_mutex_t	mtx_fork_2;
+	long	start_time;
 	long	nb_philos;
 	long	forks;
 	long	time_to_die;
@@ -96,10 +96,17 @@ int	ft_first_args_check_have_error(int ac, char **av);
 // 20_parse data
 int	ft_parse_data_and_check_error(char **av, t_args *val);
 
+// 30_prepare restaurant (memmory :D )
+t_philo	**ft_create_philos_mem(t_args *d);
+int	ft_philo_checkin_is_ok(t_philo **ph, t_args *d);
+
+// 40_let the game begin
+void	ft_let_the_game_begin(t_philo **ph, t_args *d);
 
 //utils
 int				ft_isdigit(int c);
 long	ft_atol_positive(const char *nptr);
 void			ft_print_user_manual();
+size_t	ft_get_time(void);
 
 #endif

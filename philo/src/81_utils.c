@@ -38,7 +38,7 @@ void	ft_print_user_manual()
 	printf("./philo 2 800 200 200\n\n");
 }
 
-size_t	ft_getime(void)
+size_t	ft_get_time(void)
 {
 	struct timeval	time;
 	if (gettimeofday(&time, NULL) == -1)
