@@ -3,6 +3,7 @@
 void	ft_init_variables(t_args *val)
 {
 	val->nb_philos = 0;
+	val->forks = 0;
 	val->time_to_die = 0;
 	val->time_to_eat = 0;
 	val->time_to_sleep = 0;
