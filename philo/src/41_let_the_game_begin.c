@@ -18,7 +18,7 @@ void	ft_let_the_game_begin(t_philo **ph, t_args *d)
 
 	i = 0;
 	printf("nr philos %lu\n", d->nb_philos);
-	//d->start_time = ft_get_time();
+	//usleep(1000);
 	while (i < d->nb_philos)
 	{
 		pthread_join(ph[i]->td, NULL);

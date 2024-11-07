@@ -42,7 +42,15 @@ SRCS = \
 	  src/41_let_the_game_begin.c \
 	  src/81_utils.c
 
-OBJS = $(SRCS:.c=.o)
+#OBJS = $(SRCS:.c=.o)
+
+OBJ_DIR = obj
+OBJS = $(patsubst src/%.c, $(OBJ_DIR)/%.o, $(SRCS))
+
+
+$(OBJ_DIR)/%.o: src/%.c
+	@mkdir -p $(OBJ_DIR)  # Create the obj directory if it doesn't exist
+	@$(CC) $(CFLAGS) $(EFLAGS) -c $< -o $@
 
 %.o: %.c
 	@$(CC) $(CFLAGS) $(EFLAGS) -c $< -o $@
@@ -64,7 +72,7 @@ te:	re
 
 .PHONY: clean
 clean:
-	@ $(RM) -f $(OBJS)
+	@ $(RM) -f $(OBJ_DIR)
 	@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)objs ✅"
 
 

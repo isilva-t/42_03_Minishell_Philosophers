@@ -14,6 +14,8 @@ int	main(int ac, char **av)
 	ph = ft_create_philos_mem(&d);
 		if (!ph)
 			return (printf("Error: Can't create Philosophers memory.\n"), 1);
+	d.start_time = ft_get_time();
+	usleep(50);
 	if (ft_philo_checkin_is_ok(ph, &d) == FALSE)
 		return (printf("Error on checkin!\n"), 1);
 
