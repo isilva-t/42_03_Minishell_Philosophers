@@ -7,12 +7,12 @@ void	ft_usleep(size_t time)
 
 void	ft_set_meal_time(t_philo *ph)
 {
-	ph->last_meal = ft_get_time() - ph->d->start_time;
+	ph->last_meal = ft_get_time();
 }
 
 void	ft_log(t_philo *ph, char *what_are_doing)
 {
-	printf("%zu %d %s\n", ft_get_time() - ph->d->start_time, ph->id, what_are_doing);
+	printf("%zu\t%d %s\n", ft_get_time() - ph->d->start_time, ph->id, what_are_doing);
 }
 
 enum e_status	ft_set_philo_status(t_philo *ph, enum e_status status)
@@ -53,7 +53,6 @@ void	*ft_philo_dinner_plan(void *arg)
 	
 	while (ph->n_meals == 0 || ph->status > DIED)
 	{
-		ft_set_meal_time(ph);
 
 		if (ft_set_philo_status(ph, EATING) == DIED && ph->n_meals > 0)
 			break ;
