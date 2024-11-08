@@ -14,10 +14,10 @@
 
 void	ft_let_the_game_begin(t_philo **ph, t_args *d)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	printf("nr philos %lu\n", d->nb_philos);
+	//printf("nr philos %lu\n", d->nb_philos);
 	//usleep(1000);
 	while (i < d->nb_philos)
 	{

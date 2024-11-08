@@ -11,11 +11,12 @@ int	main(int ac, char **av)
 		return (1);
 	pthread_mutex_init(&d.mtx_fork_1, NULL);
 	pthread_mutex_init(&d.mtx_fork_2, NULL);
+	d.start_time = ft_get_time();
+	printf("start time: %zu \n", d.start_time);
+	usleep(50);
 	ph = ft_create_philos_mem(&d);
 		if (!ph)
 			return (printf("Error: Can't create Philosophers memory.\n"), 1);
-	d.start_time = ft_get_time();
-	usleep(50);
 	if (ft_philo_checkin_is_ok(ph, &d) == FALSE)
 		return (printf("Error on checkin!\n"), 1);
 

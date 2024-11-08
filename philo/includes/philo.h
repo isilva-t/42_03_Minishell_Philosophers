@@ -25,11 +25,11 @@
 # define YELLOW "\e[1;3;93m"
 # define RESET "\e[0m"
 
-# define FORK "has taken a fork"
-# define EAT "is eating"
-# define SLEEP "is sleeping"
-# define THINK "is thinking"
-# define DIE "died"
+# define S_FORK "has taken a fork"
+# define S_EATING "is eating"
+# define S_SLEEPING "is sleeping"
+# define S_THINKING "is thinking"
+# define S_DIED "died"
 # define LEFT 0
 # define RIGHT 1
 
@@ -52,17 +52,26 @@ typedef struct s_table
 	time_t			time_to_sleep;
 }	t_table;
 
+typedef enum e_status
+{
+	DIED = 0,
+	EATING = 1,
+	SLEEPING = 2,
+	THINKING = 3,
+	GOT_FORK_1 = 4,
+	GOT_FORK_2 = 5
+}	t_status;
 
 typedef struct	s_args
 {
 	pthread_mutex_t	mtx_fork_1;
 	pthread_mutex_t	mtx_fork_2;
-	long	start_time;
-	long	nb_philos;
-	long	forks;
-	long	time_to_die;
-	long	time_to_eat;
-	long	time_to_sleep;
+	size_t	start_time;
+	size_t	nb_philos;
+	size_t	forks;
+	size_t	time_to_die;
+	size_t	time_to_eat;
+	size_t	time_to_sleep;
 	long	nb_must_eat;
 	int		error_philo;
 }	t_args;
@@ -73,19 +82,12 @@ typedef struct s_philo
 	unsigned int	id;
 	unsigned int	fork[2];
 	pthread_mutex_t	meal_lock;
-	time_t			last_meal;
+	size_t			last_meal;
+	unsigned int	n_meals;
+	enum e_status		status;
 	t_args			*d;
 }	t_philo;
 
-typedef enum e_status
-{
-	DIED = 0,
-	EATING = 1,
-	SLEEPING = 2,
-	THINKING = 3,
-	GOT_FORK_1 = 4,
-	GOT_FORK_2 = 5
-}	t_status;
 
 // init vars
 void	ft_init_variables(t_args *val);
@@ -105,7 +107,7 @@ void	ft_let_the_game_begin(t_philo **ph, t_args *d);
 
 //utils
 int				ft_isdigit(int c);
-long	ft_atol_positive(const char *nptr);
+size_t	ft_atol_positive(const char *nptr);
 void			ft_print_user_manual();
 size_t	ft_get_time(void);
 

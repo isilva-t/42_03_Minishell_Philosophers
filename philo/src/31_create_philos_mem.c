@@ -15,7 +15,7 @@
 t_philo	**ft_create_philos_mem(t_args *d)
 {
 	t_philo	**ph;
-	int		i;
+	size_t		i;
 
 	ph = (t_philo **)malloc(sizeof(t_philo *) * d->nb_philos);
 	if (!ph)
@@ -31,8 +31,10 @@ t_philo	**ft_create_philos_mem(t_args *d)
 			free(ph);
 			return (NULL);
 		}
+		ph[i]->last_meal = d->start_time;
 		ph[i]->d = d;
 		ph[i]->id = i + 1;
+		ph[i]->n_meals = 0;
 		i++;
 	}
 	return (ph);

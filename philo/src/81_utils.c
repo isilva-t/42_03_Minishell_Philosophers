@@ -7,10 +7,10 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-long	ft_atol_positive(const char *nptr)
+size_t	ft_atol_positive(const char *nptr)
 {
 	int	i;
-	long	num;
+	size_t	num;
 
 	i = 0;
 	num = 0;
