@@ -10,32 +10,44 @@ int	main(int ac, char **av)
 		return (1);
 	if (ft_parse_data_and_check_error(av, &d) == TRUE)
 		return (1);
-	pthread_mutex_init(&d.mtx_fork_1, NULL);
-	pthread_mutex_init(&d.mtx_fork_2, NULL);
-	d.start_time = ft_get_time();
+	// pthread_mutex_init(&d.mtx_fork_1, NULL);
+	// pthread_mutex_init(&d.mtx_fork_2, NULL);
+	pthread_mutex_init(&d.mtx_all_eaten, NULL);
+	pthread_mutex_init(&d.mtx_meal_time[1], NULL);
+	pthread_mutex_init(&d.mtx_meal_time[2], NULL);
+d.start_time = ft_get_time();
 	printf("start time: %zu \n", d.start_time);
 	usleep(50);
 	ph = ft_create_philos_mem(&d);
 		if (!ph)
 			return (printf("Error: Can't create Philosophers memory.\n"), 1);
 	i = 0;
-	if (ft_philo_checkin_is_ok(ph, &d) == FALSE)
+	if (ft_let_the_game_begin(ph, &d) == FALSE)
 		return (printf("Error on checkin!\n"), 1);
 	
 	while (i < d.nb_philos)
 	{
-		
 
-		pthread_mutex_lock(&d.meal_time_lock[i]);
+		pthread_mutex_lock(&d.mtx_all_eaten);
+		if (d.all_eaten == d.nb_philos)
+		{
+			pthread_mutex_unlock(&d.mtx_all_eaten);
+			ft_stop_the_game(ph, &d);
+			break;
+		}
+		pthread_mutex_unlock(&d.mtx_all_eaten);
+		
+		pthread_mutex_lock(&d.mtx_meal_time[i]);
 		if (ft_get_time() - ph[i]->last_meal > d.time_to_die)
 		{
 			d.is_died = 1;
-			pthread_mutex_unlock(&d.meal_time_lock[i]);
-			ft_let_the_game_begin(ph, &d);
+			pthread_mutex_unlock(&d.mtx_meal_time[i]);
+			ft_stop_the_game(ph, &d);
 			ft_log(ph[i], S_DIED);
 			break;
 		}
-		pthread_mutex_unlock(&d.meal_time_lock[i]);
+		pthread_mutex_unlock(&d.mtx_meal_time[i]);
+
 		i = (i + 1) % d.nb_philos;
 	}
 

@@ -66,8 +66,9 @@ typedef struct	s_args
 {
 	pthread_mutex_t	mtx_fork_1;
 	pthread_mutex_t	mtx_fork_2;
-	pthread_mutex_t	meal_time_lock[2];
+	pthread_mutex_t	mtx_meal_time[2];
 	pthread_mutex_t is_dead_lock[2];
+	pthread_mutex_t	mtx_all_eaten;
 	size_t	start_time;
 	size_t	nb_philos;
 	size_t	forks;
@@ -75,6 +76,7 @@ typedef struct	s_args
 	size_t	time_to_eat;
 	size_t	time_to_sleep;
 	size_t	is_died;
+	size_t	all_eaten;
 	long	nb_must_eat;
 	int		error_philo;
 }	t_args;
@@ -87,6 +89,8 @@ typedef struct s_philo
 	pthread_mutex_t	meal_lock;
 	size_t			last_meal;
 	unsigned int	n_meals;
+	unsigned int	max_meals;
+	unsigned int	all_eaten;
 	enum e_status		status;
 	t_args			*d;
 }	t_philo;
@@ -103,10 +107,10 @@ int	ft_parse_data_and_check_error(char **av, t_args *val);
 
 // 30_prepare restaurafile:///home/isilva-t/Pictures/Screenshot_20241108_122307.pngnt (memmory :D )
 t_philo	**ft_create_philos_mem(t_args *d);
-int	ft_philo_checkin_is_ok(t_philo **ph, t_args *d);
+int	ft_let_the_game_begin(t_philo **ph, t_args *d);
 
 // 40_let the game begin
-void	ft_let_the_game_begin(t_philo **ph, t_args *d);
+void	ft_stop_the_game(t_philo **ph, t_args *d);
 
 //utils
 int				ft_isdigit(int c);
@@ -114,6 +118,7 @@ size_t	ft_atol_positive(const char *nptr);
 void			ft_print_user_manual();
 size_t	ft_get_time(void);
 void	ft_log(t_philo *ph, char *what_are_doing);
+void	ft_usleep(size_t time);
 
 // to delete
 void	local(char *str); // to delete

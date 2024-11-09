@@ -1,11 +1,5 @@
 #include "philo.h"
-#include <bits/pthreadtypes.h>
-#include <pthread.h>
 
-void	ft_usleep(size_t time)
-{
-	usleep(time * 1000);
-}
 
 void	ft_set_meal_time(size_t *last_meal)
 {
@@ -48,25 +42,32 @@ void	*ft_philo_dinner_plan(void *arg)
 
 	ph = (t_philo *)arg;
 
-	pthread_mutex_lock(&ph->d->meal_time_lock[ph->id - 1]);
+	pthread_mutex_lock(&ph->d->mtx_meal_time[ph->id - 1]);
 	while (ph->n_meals != ph->d->nb_must_eat && ph->d->is_died == 0)
 	{
 	
 		ph->last_meal = ft_get_time();
-		pthread_mutex_unlock(&ph->d->meal_time_lock[ph->id - 1]);
-		ft_log(ph, S_EATING);
 		ph->n_meals++;
+		pthread_mutex_unlock(&ph->d->mtx_meal_time[ph->id - 1]);
+		ft_log(ph, S_EATING);
+		if (ph->n_meals == ph->max_meals)
+		{
+			pthread_mutex_lock(&ph->d->mtx_all_eaten);
+			ph->d->all_eaten++;
+			pthread_mutex_unlock(&ph->d->mtx_all_eaten);
+			break ;
+		}
 		ft_usleep(ph->d->time_to_eat);
 		ft_log(ph, S_SLEEPING);
 		ft_usleep(ph->d->time_to_sleep);
 		ft_log(ph, S_THINKING);
 	
-		pthread_mutex_lock(&ph->d->meal_time_lock[ph->id - 1]);
+		pthread_mutex_lock(&ph->d->mtx_meal_time[ph->id - 1]);
 	}
 	return (NULL);
 }
 
-int	ft_philo_checkin_is_ok(t_philo **ph, t_args *d)
+int	ft_let_the_game_begin(t_philo **ph, t_args *d)
 {
 	size_t	i;
 

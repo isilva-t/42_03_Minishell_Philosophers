@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void	ft_let_the_game_begin(t_philo **ph, t_args *d)
+void	ft_stop_the_game(t_philo **ph, t_args *d)
 {
 	size_t	i;
 

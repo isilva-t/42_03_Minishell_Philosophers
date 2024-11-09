@@ -56,3 +56,8 @@ void	local(char *str)
 	printf("%s\n", str); //to_delete
 }
 
+void	ft_usleep(size_t time)
+{
+	usleep(time * 1000);
+}
+

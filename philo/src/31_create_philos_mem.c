@@ -35,6 +35,8 @@ t_philo	**ft_create_philos_mem(t_args *d)
 		ph[i]->d = d;
 		ph[i]->id = i + 1;
 		ph[i]->n_meals = 0;
+		ph[i]->all_eaten = 0;
+		ph[i]->max_meals = d->nb_must_eat;
 		i++;
 	}
 	return (ph);
