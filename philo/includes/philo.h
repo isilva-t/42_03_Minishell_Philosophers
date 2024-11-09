@@ -66,12 +66,15 @@ typedef struct	s_args
 {
 	pthread_mutex_t	mtx_fork_1;
 	pthread_mutex_t	mtx_fork_2;
+	pthread_mutex_t	meal_time_lock[2];
+	pthread_mutex_t is_dead_lock[2];
 	size_t	start_time;
 	size_t	nb_philos;
 	size_t	forks;
 	size_t	time_to_die;
 	size_t	time_to_eat;
 	size_t	time_to_sleep;
+	size_t	is_died;
 	long	nb_must_eat;
 	int		error_philo;
 }	t_args;
@@ -98,7 +101,7 @@ int	ft_first_args_check_have_error(int ac, char **av);
 // 20_parse data
 int	ft_parse_data_and_check_error(char **av, t_args *val);
 
-// 30_prepare restaurant (memmory :D )
+// 30_prepare restaurafile:///home/isilva-t/Pictures/Screenshot_20241108_122307.pngnt (memmory :D )
 t_philo	**ft_create_philos_mem(t_args *d);
 int	ft_philo_checkin_is_ok(t_philo **ph, t_args *d);
 
@@ -110,5 +113,8 @@ int				ft_isdigit(int c);
 size_t	ft_atol_positive(const char *nptr);
 void			ft_print_user_manual();
 size_t	ft_get_time(void);
+void	ft_log(t_philo *ph, char *what_are_doing);
 
+// to delete
+void	local(char *str); // to delete
 #endif

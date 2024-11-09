@@ -45,3 +45,14 @@ size_t	ft_get_time(void)
 		printf("gettimeofday() error\n");
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
+
+void	ft_log(t_philo *ph, char *what_are_doing)
+{
+	printf("%zu\t%d %s\n", ft_get_time() - ph->d->start_time, ph->id, what_are_doing);
+}
+
+void	local(char *str)
+{
+	printf("%s\n", str); //to_delete
+}
+

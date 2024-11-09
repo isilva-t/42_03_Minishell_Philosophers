@@ -8,5 +8,6 @@ void	ft_init_variables(t_args *val)
 	val->time_to_eat = 0;
 	val->time_to_sleep = 0;
 	val->nb_must_eat = 0;
+	val->is_died = 0;
 	val->error_philo = 0;
 }
