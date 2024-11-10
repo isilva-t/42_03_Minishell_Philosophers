@@ -42,13 +42,13 @@ void	*ft_philo_dinner_plan(void *arg)
 
 	ph = (t_philo *)arg;
 
-	pthread_mutex_lock(&ph->d->mtx_meal_time[ph->id - 1]);
+	pthread_mutex_lock(&ph->d->mtx_meal_time[ph->index]);
 	while (ph->n_meals != ph->d->nb_must_eat && ph->d->is_died == 0)
 	{
 	
 		ph->last_meal = ft_get_time();
 		ph->n_meals++;
-		pthread_mutex_unlock(&ph->d->mtx_meal_time[ph->id - 1]);
+		pthread_mutex_unlock(&ph->d->mtx_meal_time[ph->index]);
 		ft_log(ph, S_EATING);
 		if (ph->n_meals == ph->max_meals)
 		{
@@ -57,26 +57,29 @@ void	*ft_philo_dinner_plan(void *arg)
 			pthread_mutex_unlock(&ph->d->mtx_all_eaten);
 			break ;
 		}
+
 		ft_usleep(ph->d->time_to_eat);
 		ft_log(ph, S_SLEEPING);
 		ft_usleep(ph->d->time_to_sleep);
 		ft_log(ph, S_THINKING);
 	
-		pthread_mutex_lock(&ph->d->mtx_meal_time[ph->id - 1]);
+		pthread_mutex_lock(&ph->d->mtx_meal_time[ph->index]);
 	}
 	return (NULL);
 }
 
 int	ft_let_the_game_begin(t_philo **ph, t_args *d)
 {
-	size_t	i;
+	size_t	j;
 
-	i = 0;
-	while (i < d->nb_philos)
+
+
+	j = 0;
+	while (j < d->nb_philos)
 	{
-		pthread_create(&(ph[i]->td), NULL,
-			&ft_philo_dinner_plan, (void *)ph[i]); //NEED SECURE
-		i++;
+		pthread_create(&(ph[j]->td), NULL,
+			&ft_philo_dinner_plan, (void *)ph[j]); //NEED SECURE
+		j++;
 	}
 	return (TRUE);
 }

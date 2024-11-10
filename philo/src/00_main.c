@@ -1,5 +1,40 @@
 #include "philo.h"
 
+int	ft_mutex_init(t_args *d)
+{
+	size_t	i;
+
+	i = 0;
+
+	d->mtx_meal_time = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * d->nb_philos);
+	if (!d->mtx_meal_time)
+		return (FALSE);
+
+	while (i < d->nb_philos)
+	{
+		pthread_mutex_init(&d->mtx_meal_time[i], NULL); // need to secure
+		i++;
+	}
+	pthread_mutex_init(&d->mtx_all_eaten, NULL); //need secure
+	return (TRUE);
+}
+
+int	ft_mutex_destroy(t_args *d)
+{
+	size_t	i;
+
+	i = d->nb_philos;
+
+	while (i-- > 0)
+		pthread_mutex_destroy(&d->mtx_meal_time[i]); // need to secure
+	free (d->mtx_meal_time);
+
+	pthread_mutex_destroy(&d->mtx_all_eaten); //need secure
+	return (TRUE);
+}
+
+
+
 int	main(int ac, char **av)
 {
 	t_args		d;
@@ -10,20 +45,20 @@ int	main(int ac, char **av)
 		return (1);
 	if (ft_parse_data_and_check_error(av, &d) == TRUE)
 		return (1);
-	// pthread_mutex_init(&d.mtx_fork_1, NULL);
-	// pthread_mutex_init(&d.mtx_fork_2, NULL);
-	pthread_mutex_init(&d.mtx_all_eaten, NULL);
-	pthread_mutex_init(&d.mtx_meal_time[1], NULL);
-	pthread_mutex_init(&d.mtx_meal_time[2], NULL);
-d.start_time = ft_get_time();
-	printf("start time: %zu \n", d.start_time);
+	d.start_time = ft_get_time();
 	usleep(50);
 	ph = ft_create_philos_mem(&d);
-		if (!ph)
-			return (printf("Error: Can't create Philosophers memory.\n"), 1);
+	if (!ph)
+		return (printf("Error: Can't create Philosophers memory.\n"), 1);
+	
+	ft_mutex_init(&d);
+
+
+
+
 	i = 0;
 	if (ft_let_the_game_begin(ph, &d) == FALSE)
-		return (printf("Error on checkin!\n"), 1);
+		return (printf("Error creating threads!\n"), 1);
 	
 	while (i < d.nb_philos)
 	{
@@ -52,15 +87,7 @@ d.start_time = ft_get_time();
 	}
 
 
-
-
-
-	// printf("curent time: %zu\n", ft_get_time() - d.start_time);
-	// sleep(1);
-	// printf("curent time: %zu\n", ft_get_time() - d.start_time);
-
-	pthread_mutex_destroy(&d.mtx_fork_1);
-	pthread_mutex_destroy(&d.mtx_fork_1);
+	ft_mutex_destroy(&d);
 
 
 	return (0);

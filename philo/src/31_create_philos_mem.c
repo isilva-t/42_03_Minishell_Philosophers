@@ -33,6 +33,7 @@ t_philo	**ft_create_philos_mem(t_args *d)
 		}
 		ph[i]->last_meal = d->start_time;
 		ph[i]->d = d;
+		ph[i]->index = i;
 		ph[i]->id = i + 1;
 		ph[i]->n_meals = 0;
 		ph[i]->all_eaten = 0;

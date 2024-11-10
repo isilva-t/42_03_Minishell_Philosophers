@@ -39,7 +39,7 @@ SRCS = \
 	  src/21_parse_data.c \
 	  src/31_create_philos_mem.c \
 	  src/34_philo_check_in.c \
-	  src/41_let_the_game_begin.c \
+	  src/41_stop_the_game.c \
 	  src/81_utils.c
 
 #OBJS = $(SRCS:.c=.o)

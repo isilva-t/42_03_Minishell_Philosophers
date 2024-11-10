@@ -66,7 +66,7 @@ typedef struct	s_args
 {
 	pthread_mutex_t	mtx_fork_1;
 	pthread_mutex_t	mtx_fork_2;
-	pthread_mutex_t	mtx_meal_time[2];
+	pthread_mutex_t	*mtx_meal_time;
 	pthread_mutex_t is_dead_lock[2];
 	pthread_mutex_t	mtx_all_eaten;
 	size_t	start_time;
@@ -84,6 +84,7 @@ typedef struct	s_args
 typedef struct s_philo
 {
 	pthread_t		td;
+	unsigned int	index;
 	unsigned int	id;
 	unsigned int	fork[2];
 	pthread_mutex_t	meal_lock;
