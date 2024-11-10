@@ -64,9 +64,8 @@ typedef enum e_status
 
 typedef struct	s_args
 {
-	pthread_mutex_t	mtx_fork_1;
-	pthread_mutex_t	mtx_fork_2;
 	pthread_mutex_t	*mtx_meal_time;
+	pthread_mutex_t	*mtx_fork;
 	pthread_mutex_t is_dead_lock[2];
 	pthread_mutex_t	mtx_all_eaten;
 	size_t	start_time;
@@ -88,6 +87,8 @@ typedef struct s_philo
 	unsigned int	id;
 	unsigned int	fork[2];
 	pthread_mutex_t	meal_lock;
+	pthread_mutex_t	*first_fork;
+	pthread_mutex_t	*second_fork;
 	size_t			last_meal;
 	unsigned int	n_meals;
 	unsigned int	max_meals;

@@ -10,11 +10,21 @@ int	ft_mutex_init(t_args *d)
 	if (!d->mtx_meal_time)
 		return (FALSE);
 
+	d->mtx_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * d->nb_philos);
+	if (!d->mtx_fork)
+		return (FALSE);
+
 	while (i < d->nb_philos)
 	{
 		pthread_mutex_init(&d->mtx_meal_time[i], NULL); // need to secure
+		pthread_mutex_init(&d->mtx_fork[i], NULL); // need to secure
 		i++;
 	}
+
+
+
+
+
 	pthread_mutex_init(&d->mtx_all_eaten, NULL); //need secure
 	return (TRUE);
 }
