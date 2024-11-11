@@ -43,6 +43,26 @@ int	ft_mutex_destroy(t_args *d)
 	return (TRUE);
 }
 
+int	ft_align_forks(t_philo **ph, t_args *d)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < d->nb_philos)
+	{
+	//	if (ph[i]->id % 2 == 0)
+	//	{
+			ph[i]->first_fork = &d->mtx_fork[i];
+			if (i == d->nb_philos - 1)
+				ph[i]->second_fork = &d->mtx_fork[0];
+			else
+				ph[i]->second_fork = &d->mtx_fork[i + 1];
+
+	//	}
+		i++;
+	}
+	return (TRUE);
+}
 
 
 int	main(int ac, char **av)
@@ -64,6 +84,7 @@ int	main(int ac, char **av)
 	ft_mutex_init(&d);
 
 
+	ft_align_forks(ph, &d);
 
 
 	i = 0;

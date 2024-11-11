@@ -85,7 +85,6 @@ typedef struct s_philo
 	pthread_t		td;
 	unsigned int	index;
 	unsigned int	id;
-	unsigned int	fork[2];
 	pthread_mutex_t	meal_lock;
 	pthread_mutex_t	*first_fork;
 	pthread_mutex_t	*second_fork;
@@ -93,6 +92,7 @@ typedef struct s_philo
 	unsigned int	n_meals;
 	unsigned int	max_meals;
 	unsigned int	all_eaten;
+	size_t	start_delay;
 	enum e_status		status;
 	t_args			*d;
 }	t_philo;
