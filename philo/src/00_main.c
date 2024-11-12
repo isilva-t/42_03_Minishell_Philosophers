@@ -20,11 +20,6 @@ int	ft_mutex_init(t_args *d)
 		pthread_mutex_init(&d->mtx_fork[i], NULL); // need to secure
 		i++;
 	}
-
-
-
-
-
 	pthread_mutex_init(&d->mtx_all_eaten, NULL); //need secure
 	return (TRUE);
 }
@@ -34,11 +29,13 @@ int	ft_mutex_destroy(t_args *d)
 	size_t	i;
 
 	i = d->nb_philos;
-
 	while (i-- > 0)
-		pthread_mutex_destroy(&d->mtx_meal_time[i]); // need to secure
+	{
+		pthread_mutex_destroy(&d->mtx_meal_time[i]);
+		pthread_mutex_destroy(&d->mtx_fork[i]);
+	}
 	free (d->mtx_meal_time);
-
+	free (d->mtx_fork);
 	pthread_mutex_destroy(&d->mtx_all_eaten); //need secure
 	return (TRUE);
 }
@@ -75,6 +72,20 @@ int	ft_align_forks(t_philo **ph, t_args *d)
 }
 
 
+int	ft_free_philo_mem(t_philo **ph, t_args *d)
+{
+	size_t i;
+
+	i = 0;
+	while (i < d->nb_philos)
+	{
+		free(ph[i]);
+		i++;
+	}
+	free(ph);
+	return (TRUE);
+}
+
 int	main(int ac, char **av)
 {
 	t_args		d;
@@ -85,6 +96,7 @@ int	main(int ac, char **av)
 		return (1);
 	if (ft_parse_data_and_check_error(av, &d) == TRUE)
 		return (1);
+	i = 0;
 	d.start_time = ft_get_time();
 	usleep(50);
 	ph = ft_create_philos_mem(&d);
@@ -97,7 +109,6 @@ int	main(int ac, char **av)
 	ft_align_forks(ph, &d);
 
 
-	i = 0;
 	if (ft_let_the_game_begin(ph, &d) == FALSE)
 		return (printf("Error creating threads!\n"), 1);
 	
@@ -127,9 +138,9 @@ int	main(int ac, char **av)
 		i = (i + 1) % d.nb_philos;
 	}
 
-
+	usleep(5000);
 	ft_mutex_destroy(&d);
-
+	ft_free_philo_mem(ph, &d);
 
 	return (0);
 }

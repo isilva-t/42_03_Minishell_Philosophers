@@ -2,11 +2,11 @@
 #include <pthread.h>
 
 
-void	ft_set_meal_time(size_t *last_meal)
-{
-	*last_meal = ft_get_time();
-}
-					
+// void	ft_set_meal_time(size_t *last_meal)
+// {
+// 	*last_meal = ft_get_time();
+// }
+// 					
 
 void	*ft_philo_dinner_plan(void *arg)
 {
@@ -14,7 +14,7 @@ void	*ft_philo_dinner_plan(void *arg)
 
 	ph = (t_philo *)arg;
 
-	ft_usleep(ph->start_delay);
+	//ft_usleep(ph->start_delay);
 
 	pthread_mutex_lock(&ph->d->mtx_meal_time[ph->index]);
 	while (ph->n_meals != ph->d->nb_must_eat && ph->d->is_died == 0)
@@ -28,6 +28,7 @@ void	*ft_philo_dinner_plan(void *arg)
 		ph->n_meals++;
 		pthread_mutex_unlock(&ph->d->mtx_meal_time[ph->index]);
 		ft_log(ph, S_EATING);
+		ft_usleep(ph->d->time_to_eat);
 		if (ph->n_meals == ph->max_meals)
 		{
 			pthread_mutex_unlock(ph->first_fork);
@@ -40,7 +41,6 @@ void	*ft_philo_dinner_plan(void *arg)
 			break ;
 		}
 
-		ft_usleep(ph->d->time_to_eat);
 		pthread_mutex_unlock(ph->first_fork);
 		pthread_mutex_unlock(ph->second_fork);
 
