@@ -47,6 +47,7 @@ void	*ft_philo_dinner_plan(void *arg)
 		ft_log(ph, S_SLEEPING);
 		ft_usleep(ph->d->time_to_sleep);
 		ft_log(ph, S_THINKING);
+		usleep(500);
 	
 		pthread_mutex_lock(&ph->d->mtx_meal_time[ph->index]);
 	}

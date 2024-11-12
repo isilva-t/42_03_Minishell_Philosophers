@@ -50,15 +50,25 @@ int	ft_align_forks(t_philo **ph, t_args *d)
 	i = 0;
 	while (i < d->nb_philos)
 	{
-	//	if (ph[i]->id % 2 == 0)
-	//	{
+		if (ph[i]->id % 2 == 0)
+		{
 			ph[i]->first_fork = &d->mtx_fork[i];
+
 			if (i == d->nb_philos - 1)
 				ph[i]->second_fork = &d->mtx_fork[0];
 			else
 				ph[i]->second_fork = &d->mtx_fork[i + 1];
+		}
+		else
+		{
+			if (i == d->nb_philos - 1)
+				ph[i]->first_fork = &d->mtx_fork[0];
+			else
+				ph[i]->first_fork = &d->mtx_fork[i + 1];
 
-	//	}
+			ph[i]->second_fork = &d->mtx_fork[i];
+		}
+
 		i++;
 	}
 	return (TRUE);
