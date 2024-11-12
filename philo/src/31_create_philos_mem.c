@@ -41,6 +41,7 @@ t_philo	**ft_create_philos_mem(t_args *d)
 		ph[i]->n_meals = 0;
 		ph[i]->all_eaten = 0;
 		ph[i]->max_meals = d->nb_must_eat;
+		ph[i]->n_philos = d->nb_philos;
 
 		ph[i]->start_delay = ph[i]->id % 2 * 50; // TO TEST EVEN PHILOS
 		i++;

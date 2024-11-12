@@ -7,7 +7,15 @@
 // 	*last_meal = ft_get_time();
 // }
 // 					
-
+	//
+	//
+	//
+	// pthread_mutex_lock(&ph->d->mtx_meal_time[ph->index]);
+	//
+	// 	pthread_mutex_unlock(&ph->d->mtx_meal_time[ph->index]);
+	//
+	// 	pthread_mutex_lock(&ph->d->mtx_meal_time[ph->index]);
+	//
 void	*ft_philo_dinner_plan(void *arg)
 {
 	t_philo			*ph;
@@ -16,40 +24,32 @@ void	*ft_philo_dinner_plan(void *arg)
 
 	//ft_usleep(ph->start_delay);
 
-	pthread_mutex_lock(&ph->d->mtx_meal_time[ph->index]);
-	while (ph->n_meals != ph->d->nb_must_eat && ph->d->is_died == 0)
+	while (ph->n_meals != ph->d->nb_must_eat)
 	{
 		pthread_mutex_lock(ph->first_fork);
-		ft_log(ph, S_FORK);
+		ft_log(ph, S_FORK, ph->index);
 		pthread_mutex_lock(ph->second_fork);
-		ft_log(ph, S_FORK);
-
+		ft_log(ph, S_FORK, ph->index);
 		ph->last_meal = ft_get_time();
 		ph->n_meals++;
-		pthread_mutex_unlock(&ph->d->mtx_meal_time[ph->index]);
-		ft_log(ph, S_EATING);
+		ft_log(ph, S_EATING, ph->index);
 		ft_usleep(ph->d->time_to_eat);
-		if (ph->n_meals == ph->max_meals)
+		if (ph->max_meals > 0 && ph->n_meals == ph->max_meals)
 		{
-			pthread_mutex_unlock(ph->first_fork);
 			pthread_mutex_unlock(ph->second_fork);
-
-
-			pthread_mutex_lock(&ph->d->mtx_all_eaten);
-			ph->d->all_eaten++;
-			pthread_mutex_unlock(&ph->d->mtx_all_eaten);
+			pthread_mutex_unlock(ph->first_fork);
+			ft_log(ph, "acabou\n", ph->index);
 			break ;
 		}
 
-		pthread_mutex_unlock(ph->first_fork);
 		pthread_mutex_unlock(ph->second_fork);
+		pthread_mutex_unlock(ph->first_fork);
 
-		ft_log(ph, S_SLEEPING);
+		ft_log(ph, S_SLEEPING, ph->index);
 		ft_usleep(ph->d->time_to_sleep);
-		ft_log(ph, S_THINKING);
+		ft_log(ph, S_THINKING, ph->index);
 		usleep(500);
 	
-		pthread_mutex_lock(&ph->d->mtx_meal_time[ph->index]);
 	}
 	return (NULL);
 }

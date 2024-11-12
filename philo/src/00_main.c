@@ -6,21 +6,16 @@ int	ft_mutex_init(t_args *d)
 
 	i = 0;
 
-	d->mtx_meal_time = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * d->nb_philos);
-	if (!d->mtx_meal_time)
-		return (FALSE);
-
 	d->mtx_fork = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * d->nb_philos);
 	if (!d->mtx_fork)
 		return (FALSE);
-
 	while (i < d->nb_philos)
 	{
-		pthread_mutex_init(&d->mtx_meal_time[i], NULL); // need to secure
 		pthread_mutex_init(&d->mtx_fork[i], NULL); // need to secure
 		i++;
 	}
-	pthread_mutex_init(&d->mtx_all_eaten, NULL); //need secure
+	pthread_mutex_init(&d->mtx_main, NULL); // need to secure
+	pthread_mutex_init(&d->mtx_log, NULL); // need to secure
 	return (TRUE);
 }
 
@@ -31,12 +26,11 @@ int	ft_mutex_destroy(t_args *d)
 	i = d->nb_philos;
 	while (i-- > 0)
 	{
-		pthread_mutex_destroy(&d->mtx_meal_time[i]);
 		pthread_mutex_destroy(&d->mtx_fork[i]);
 	}
-	free (d->mtx_meal_time);
 	free (d->mtx_fork);
-	pthread_mutex_destroy(&d->mtx_all_eaten); //need secure
+	pthread_mutex_destroy(&d->mtx_main); //need secure
+	pthread_mutex_destroy(&d->mtx_log); //need secure
 	return (TRUE);
 }
 
@@ -115,25 +109,17 @@ int	main(int ac, char **av)
 	while (i < d.nb_philos)
 	{
 
-		pthread_mutex_lock(&d.mtx_all_eaten);
-		if (d.all_eaten == d.nb_philos)
-		{
-			pthread_mutex_unlock(&d.mtx_all_eaten);
-			ft_stop_the_game(ph, &d);
-			break;
-		}
-		pthread_mutex_unlock(&d.mtx_all_eaten);
 		
-		pthread_mutex_lock(&d.mtx_meal_time[i]);
-		if (ft_get_time() - ph[i]->last_meal > d.time_to_die)
+		pthread_mutex_lock(&d.mtx_main);
+		if (ft_get_time() - ph[i]->last_meal > d.time_to_die ||
+		ph[i]->n_meals < ph[i]->max_meals)
 		{
-			d.is_died = 1;
-			pthread_mutex_unlock(&d.mtx_meal_time[i]);
+			pthread_mutex_unlock(&d.mtx_main);
 			ft_stop_the_game(ph, &d);
-			ft_log(ph[i], S_DIED);
+			ft_log(ph[i], S_DIED, 0);
 			break;
 		}
-		pthread_mutex_unlock(&d.mtx_meal_time[i]);
+		pthread_mutex_unlock(&d.mtx_main);
 
 		i = (i + 1) % d.nb_philos;
 	}

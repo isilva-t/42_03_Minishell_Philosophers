@@ -68,6 +68,8 @@ typedef struct	s_args
 	pthread_mutex_t	*mtx_fork;
 	pthread_mutex_t is_dead_lock[2];
 	pthread_mutex_t	mtx_all_eaten;
+	pthread_mutex_t mtx_main;
+	pthread_mutex_t	mtx_log;
 	size_t	start_time;
 	size_t	nb_philos;
 	size_t	forks;
@@ -92,6 +94,7 @@ typedef struct s_philo
 	unsigned int	n_meals;
 	unsigned int	max_meals;
 	unsigned int	all_eaten;
+	size_t	n_philos;
 	size_t	start_delay;
 	enum e_status		status;
 	t_args			*d;
@@ -119,7 +122,7 @@ int				ft_isdigit(int c);
 size_t	ft_atol_positive(const char *nptr);
 void			ft_print_user_manual();
 size_t	ft_get_time(void);
-void	ft_log(t_philo *ph, char *what_are_doing);
+void	ft_log(t_philo *ph, char *what_are_doing, size_t n_philos);
 void	ft_usleep(size_t time);
 
 // to delete

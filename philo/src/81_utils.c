@@ -1,4 +1,5 @@
 #include "philo.h"
+#include <pthread.h>
 
 int	ft_isdigit(int c)
 {
@@ -46,9 +47,17 @@ size_t	ft_get_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	ft_log(t_philo *ph, char *what_are_doing)
+void	ft_log(t_philo *ph, char *what_are_doing, size_t n_philos)
 {
+	size_t i = 0;
+	pthread_mutex_lock(&ph->d->mtx_log);
+	while (i < n_philos)
+	{
+		printf("\t\t\t\t");
+		i++;
+	}
 	printf("%zu\t%d %s\n", ft_get_time() - ph->d->start_time, ph->id, what_are_doing);
+	pthread_mutex_unlock(&ph->d->mtx_log);
 }
 
 void	local(char *str)
