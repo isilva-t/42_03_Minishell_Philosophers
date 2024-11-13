@@ -18,10 +18,9 @@ CYAN	= \033[1;36m
 NAME = philo
 CC = cc
 CFLAGS = -Iincludes
-EFLAGS = -Wall -Wextra -Werror -g
+EFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
 RM	    = rm -rf
 
-#-fsanitize=thread
 
 
 ##############################
@@ -68,6 +67,12 @@ $(NAME): $(OBJS) $(HEADER)
 
 te:	re
 	@echo -n "./philo "; read args; ./philo $$args
+
+hel:	re
+	@echo -n "valgrind --tool=helgrind ./philo "; read args; ./philo $$args
+
+drd:	re
+	@echo -n "valgrind --tool=drd ./philo "; read args; ./philo $$args
 
 
 .PHONY: clean

@@ -35,6 +35,7 @@
 
 # define INVALID -1
 # define TRUE 1
+# define TRUE_VERIFYED 2
 # define FALSE 0
 
 # define THO 1000
@@ -43,24 +44,25 @@
 # define MAX_PHILO 250
 # define MIN_TIME 60
 
-typedef struct s_table
-{
-	time_t	start_time;
-	unsigned int	n_philos;
-	time_t			time_to_die;
-	time_t			time_to_eat;
-	time_t			time_to_sleep;
-}	t_table;
+// typedef struct s_table
+// {
+// 	time_t	start_time;
+// 	unsigned int	n_philos;
+// 	time_t			time_to_die;
+// 	time_t			time_to_eat;
+// 	time_t			time_to_sleep;
+// }	t_table;
 
-typedef enum e_status
-{
-	DIED = 0,
-	EATING = 1,
-	SLEEPING = 2,
-	THINKING = 3,
-	GOT_FORK_1 = 4,
-	GOT_FORK_2 = 5
-}	t_status;
+// typedef enum e_status
+// {
+// 	DIED = 0,
+// 	EATING = 1,
+// 	SLEEPING = 2,
+// 	THINKING = 3,
+// 	GOT_FORK_1 = 4,
+// 	GOT_FORK_2 = 5
+// }	t_status;
+
 
 typedef struct	s_args
 {
@@ -70,6 +72,9 @@ typedef struct	s_args
 	pthread_mutex_t	mtx_all_eaten;
 	pthread_mutex_t mtx_main;
 	pthread_mutex_t	mtx_log;
+	pthread_mutex_t mtx_finish_dinner;
+	pthread_mutex_t	meal_lock;
+	void	**ph;
 	size_t	start_time;
 	size_t	nb_philos;
 	size_t	forks;
@@ -78,6 +83,7 @@ typedef struct	s_args
 	size_t	time_to_sleep;
 	size_t	is_died;
 	size_t	all_eaten;
+	size_t	finish_dinner;
 	long	nb_must_eat;
 	int		error_philo;
 }	t_args;
@@ -87,16 +93,15 @@ typedef struct s_philo
 	pthread_t		td;
 	unsigned int	index;
 	unsigned int	id;
-	pthread_mutex_t	meal_lock;
 	pthread_mutex_t	*first_fork;
 	pthread_mutex_t	*second_fork;
 	size_t			last_meal;
 	unsigned int	n_meals;
 	unsigned int	max_meals;
-	unsigned int	all_eaten;
+	unsigned int	eating_done;
 	size_t	n_philos;
 	size_t	start_delay;
-	enum e_status		status;
+	//enum e_status		status;
 	t_args			*d;
 }	t_philo;
 

@@ -11,4 +11,5 @@ void	ft_init_variables(t_args *val)
 	val->is_died = 0;
 	val->error_philo = 0;
 	val->all_eaten = 0;
+	val->finish_dinner = 0;
 }
