@@ -14,13 +14,14 @@ int	ft_mutex_init(t_philo **ph, t_args *d)
 	while (i < d->nb_philos)
 	{
 		pthread_mutex_init(&d->mtx_fork[i], NULL); // need to secure
+		pthread_mutex_init(&ph[i]->mtx_philo, NULL);
+		pthread_mutex_init(&ph[i]->mtx_eat_done, NULL);
 		i++;
 	}
 	
 
-	pthread_mutex_init(&d->meal_lock, NULL);
-	//pthread_mutex_init(&d->mtx_main, NULL); // need to secure
 	pthread_mutex_init(&d->mtx_log, NULL); // need to secure
+	pthread_mutex_init(&d->mtx_died, NULL); // need to secure
 	pthread_mutex_init(&d->mtx_finish_dinner, NULL); // need to secure
 	return (TRUE);
 }
@@ -34,11 +35,14 @@ int	ft_mutex_destroy(t_philo **ph, t_args *d)
 	while (i-- > 0)
 	{
 		pthread_mutex_destroy(&d->mtx_fork[i]);
+		pthread_mutex_destroy(&ph[i]->mtx_philo);
+		pthread_mutex_destroy(&ph[i]->mtx_eat_done);
 	}
 	free (d->mtx_fork);
 
-	pthread_mutex_destroy(&d->meal_lock);
+
 	pthread_mutex_destroy(&d->mtx_log); //need secure
+	pthread_mutex_destroy(&d->mtx_died);
 	pthread_mutex_destroy(&d->mtx_finish_dinner); //need secure
 	
 	return (TRUE);
@@ -95,57 +99,57 @@ void	*ft_monitor(void *arg)
 	t_args	*d;
 	t_philo **ph;
 	size_t		i;
-	size_t	flag;
-
 	d = (t_args *)arg;
 	ph = (t_philo **)d->ph;
 
 	i = 0;
-	flag = 1;
 	//ft_log(ph[i], "test\n", 0);
-	while (flag)
-	{
-		i = 0;
-		
-		pthread_mutex_lock(&d->meal_lock);
-		while (i < d->nb_philos)
+	while (1)
 		{
-
-			if (d->nb_must_eat > 0 && d->all_eaten == d->nb_philos)
-			{
-				pthread_mutex_unlock(&d->meal_lock);
-				ft_stop_the_game(ph, d);
-
-				pthread_mutex_lock(&d->mtx_finish_dinner);
-				d->finish_dinner = TRUE;
-				pthread_mutex_unlock(&d->mtx_finish_dinner);
-				flag = 0;
-				break;
-			}
-
+			
+			pthread_mutex_lock(&ph[i]->mtx_eat_done);
 			if (d->nb_must_eat > 0 && ph[i]->eating_done == TRUE)
 			{
 				ph[i]->eating_done = TRUE_VERIFYED;
+				pthread_mutex_unlock(&ph[i]->mtx_eat_done);
 				d->all_eaten++;
+				if (d->nb_must_eat > 0 && d->all_eaten == d->nb_philos)
+				{
+					ft_stop_the_game(ph, d);
+					pthread_mutex_lock(&d->mtx_finish_dinner);
+					d->finish_dinner = TRUE;
+					pthread_mutex_unlock(&d->mtx_finish_dinner);
+					break;
+				}
 			}
-			else if (ft_get_time() - ph[i]->last_meal > d->time_to_die)
+			pthread_mutex_unlock(&ph[i]->mtx_eat_done);
+
+			pthread_mutex_lock(&ph[i]->mtx_philo);
+			if (ft_get_time() - ph[i]->last_meal > d->time_to_die)
 			{
-				pthread_mutex_unlock(&d->meal_lock);
+				pthread_mutex_unlock(&ph[i]->mtx_philo);
+
+				//printf("olha\n");
+				pthread_mutex_lock(&d->mtx_died);
+
+				//printf("aqui\n");
+				d->is_died = TRUE;
+				pthread_mutex_unlock(&d->mtx_died);
+
 				ft_stop_the_game(ph, d);
-				ft_log(ph[i], S_DIED, 0);
+				printf("___%zu MORREU\n", i + 1);
+				//ft_log(ph[i], S_DIED, 0); 
+				//FALTA CORRIGIR ESTA MACACADA POR CAUSA DO "DIED" ESTAR A 1 AQUI
+
 				pthread_mutex_lock(&d->mtx_finish_dinner);
 				d->finish_dinner = TRUE;
 				pthread_mutex_unlock(&d->mtx_finish_dinner);
-				flag = 0;
 				break;
 			}
+			pthread_mutex_unlock(&ph[i]->mtx_philo);
 
-			i++;
-			//i = (i + 1) % d->nb_philos;
+			i = (i + 1) % d->nb_philos;
 		}
-		if (flag)
-			pthread_mutex_unlock(&d->meal_lock);
-	}
 	return (NULL);
 }
 

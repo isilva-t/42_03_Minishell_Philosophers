@@ -50,14 +50,20 @@ size_t	ft_get_time(void)
 void	ft_log(t_philo *ph, char *what_are_doing, size_t n_philos)
 {
 	size_t i = 0;
-	pthread_mutex_lock(&ph->d->mtx_log);
-	while (i < n_philos)
+
+	pthread_mutex_lock(&ph->d->mtx_died);
+	if (ph->d->is_died == FALSE)
 	{
-		printf("\t\t\t\t");
-		i++;
+		pthread_mutex_lock(&ph->d->mtx_log);
+		while (i < n_philos)
+		{
+			printf("\t\t\t\t");
+			i++;
+		}
+		printf("%zu\t%d %s\n", ft_get_time() - ph->d->start_time, ph->id, what_are_doing);
+		pthread_mutex_unlock(&ph->d->mtx_log);
 	}
-	printf("%zu\t%d %s\n", ft_get_time() - ph->d->start_time, ph->id, what_are_doing);
-	pthread_mutex_unlock(&ph->d->mtx_log);
+	pthread_mutex_unlock(&ph->d->mtx_died);
 }
 
 void	local(char *str)

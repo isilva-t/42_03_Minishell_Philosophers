@@ -73,7 +73,7 @@ typedef struct	s_args
 	pthread_mutex_t mtx_main;
 	pthread_mutex_t	mtx_log;
 	pthread_mutex_t mtx_finish_dinner;
-	pthread_mutex_t	meal_lock;
+	pthread_mutex_t mtx_died;
 	void	**ph;
 	size_t	start_time;
 	size_t	nb_philos;
@@ -95,6 +95,8 @@ typedef struct s_philo
 	unsigned int	id;
 	pthread_mutex_t	*first_fork;
 	pthread_mutex_t	*second_fork;
+	pthread_mutex_t	mtx_philo;
+	pthread_mutex_t mtx_eat_done;
 	size_t			last_meal;
 	unsigned int	n_meals;
 	unsigned int	max_meals;
