@@ -12,3 +12,16 @@
 
 #include "philo.h"
 
+int	ft_free_philo_mem(t_philo **ph, t_args *d)
+{
+	size_t i;
+
+	i = 0;
+	while (i < d->nb_philos)
+	{
+		free(ph[i]);
+		i++;
+	}
+	free(ph);
+	return (TRUE);
+}

@@ -103,7 +103,6 @@ typedef struct s_philo
 	unsigned int	eating_done;
 	size_t	n_philos;
 	size_t	start_delay;
-	//enum e_status		status;
 	t_args			*d;
 }	t_philo;
 
@@ -117,20 +116,34 @@ int	ft_first_args_check_have_error(int ac, char **av);
 // 20_parse data
 int	ft_parse_data_and_check_error(char **av, t_args *val);
 
-// 30_prepare restaurafile:///home/isilva-t/Pictures/Screenshot_20241108_122307.pngnt (memmory :D )
+// 30_prepare restaurant
 t_philo	**ft_create_philos_mem(t_args *d);
+
+// 41_let the game begin
 int	ft_let_the_game_begin(t_philo **ph, t_args *d);
 
-// 40_let the game begin
+// 42_monitor
+void	*ft_monitor(void *arg);
+
+
+// 61_stop_the_game_
 void	ft_stop_the_game(t_philo **ph, t_args *d);
 
-//utils
+//71_mutex_init_and_destroy
+int	ft_mutex_init(t_philo **ph, t_args *d);
+int	ft_mutex_destroy(t_philo **ph, t_args *d);
+
+//81_utils
 int				ft_isdigit(int c);
 size_t	ft_atol_positive(const char *nptr);
 void			ft_print_user_manual();
 size_t	ft_get_time(void);
 void	ft_log(t_philo *ph, char *what_are_doing, size_t n_philos);
 void	ft_usleep(size_t time);
+
+// 91_free_and_cleanup
+int	ft_free_philo_mem(t_philo **ph, t_args *d);
+
 
 // to delete
 void	local(char *str); // to delete

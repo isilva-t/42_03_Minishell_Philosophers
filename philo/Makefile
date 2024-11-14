@@ -21,34 +21,33 @@ CFLAGS = -Iincludes
 EFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
 RM	    = rm -rf
 
-
-
 ##############################
 #          FILES
 ##############################
 
-vpath %.h includes
-vpath %.c src
+#vpath %.h includes
+#vpath %.c src
 
 HEADER = philo.h
 SRCS = \
-	  src/00_main.c \
-	  src/01_init.c \
-	  src/11_first_args_check.c \
-	  src/21_parse_data.c \
-	  src/31_create_philos_mem.c \
-	  src/34_philo_check_in.c \
-	  src/41_stop_the_game.c \
-	  src/81_utils.c
-
-#OBJS = $(SRCS:.c=.o)
+	  00_main.c \
+	  01_init.c \
+	  11_first_args_check.c \
+	  21_parse_data.c \
+	  31_create_philos_mem.c \
+	  41_let_the_game_begin.c \
+	  42_monitor.c \
+	  61_stop_the_game.c \
+	  71_mutex_init_and_destroy.c \
+	  81_utils.c \
+	  91_free_and_cleanup.c
 
 OBJ_DIR = obj
-OBJS = $(patsubst src/%.c, $(OBJ_DIR)/%.o, $(SRCS))
+OBJS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRCS))
 
 
-$(OBJ_DIR)/%.o: src/%.c
-	@mkdir -p $(OBJ_DIR)  # Create the obj directory if it doesn't exist
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(EFLAGS) -c $< -o $@
 
 %.o: %.c

@@ -1,20 +1,4 @@
 #include "philo.h"
-#include <pthread.h>
-
-
-// void	ft_set_meal_time(size_t *last_meal)
-// {
-// 	*last_meal = ft_get_time();
-// }
-// 					
-	//
-	//
-	//
-	// pthread_mutex_lock(&ph->d->mtx_meal_time[ph->index]);
-	//
-	// 	pthread_mutex_unlock(&ph->d->mtx_meal_time[ph->index]);
-	//
-	// 	pthread_mutex_lock(&ph->d->mtx_meal_time[ph->index]);
 
 
 
