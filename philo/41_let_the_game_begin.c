@@ -26,30 +26,29 @@ int	ft_mtx_are_all_threads_running(t_philo *ph)
 
 void	*ft_philo_dinner_plan(void *arg)
 {
-	t_philo			*ph;
+	t_philo		*ph;
 
 	ph = (t_philo *)arg;
 	while (1)
 		if (ft_mtx_are_all_threads_running(ph) == TRUE)
 			break ;
-	while (ph->n_meals != ph->d->nb_must_eat)
+	usleep(ph->start_delay);
+	while (ph->n_meals != ph->d->nb_must_eat
+		|| ft_mtx_have_died_philo(ph) == FALSE)
 	{
-		if (ft_mtx_have_died_philo(ph) == TRUE)
-			break ;
 		ft_mtx_take_forks(ph);
 		ft_mtx_save_meal_time(ph);
-		ph->n_meals++;
 		ft_log(ph, S_EATING, ph->index);
-		ft_usleep(ph->d->time_to_eat);
+		ph->usleep_done = ft_mtx_is_usleep_loop_done(ph, ph->d->time_to_eat);
 		ft_mtx_leave_forks(ph);
-		if (ph->max_meals > 0 && ft_mtx_have_reached_max_meals(ph) == TRUE)
+		if (ph->usleep_done == FALSE
+			|| (ph->max_meals > 0 && ft_mtx_have_reached_max_meals(ph) == TRUE))
 			break ;
 		ft_log(ph, S_SLEEPING, ph->index);
-		if (ft_mtx_have_died_philo(ph) == TRUE)
+		if (ft_mtx_is_usleep_loop_done(ph, ph->d->time_to_sleep) == FALSE)
 			break ;
-		ft_usleep(ph->d->time_to_sleep);
 		ft_log(ph, S_THINKING, ph->index);
-		//usleep(500);
+		usleep(50);
 	}
 	return (NULL);
 }
@@ -76,13 +75,10 @@ void	ft_set_start_time(t_args *d, t_philo **ph)
 
 	i = 0;
 	nb_philos = d->nb_philos;
-
 	start_time = ft_get_time();
 	d->start_time = start_time;
 	while (i < nb_philos)
-	{
 		ft_mtx_save_start_time(ph[i++], start_time);
-	}
 }
 
 int	ft_let_the_game_begin(t_philo **ph, t_args *d)

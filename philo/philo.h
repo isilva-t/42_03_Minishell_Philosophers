@@ -78,11 +78,13 @@ typedef struct s_philo
 	pthread_mutex_t	*second_fork;
 	pthread_mutex_t	mtx_philo;
 	pthread_mutex_t	mtx_eat_done;
+	size_t			start_delay;
 	size_t			last_meal;
 	unsigned int	n_meals;
 	unsigned int	max_meals;
 	unsigned int	eating_done;
 	size_t			n_philos;
+	int				usleep_done;
 	t_args			*d;
 }	t_philo;
 
@@ -129,6 +131,7 @@ size_t	ft_atol_positive(const char *nptr);
 void	ft_print_user_manual(void);
 size_t	ft_get_time(void);
 void	ft_usleep(size_t time);
+int		ft_mtx_is_usleep_loop_done(t_philo *ph, size_t ms_time);
 
 // 91_free_and_cleanup
 int		ft_free_philo_mem(t_philo **ph, t_args *d);

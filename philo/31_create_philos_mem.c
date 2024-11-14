@@ -22,6 +22,11 @@ void	ft_init_philo_vars(t_philo **ph, t_args *d, size_t i)
 	ph[i]->eating_done = 0;
 	ph[i]->max_meals = d->nb_must_eat;
 	ph[i]->n_philos = d->nb_philos;
+	if (ph[i]->id % 2 != 0)
+		ph[i]->start_delay = 90;
+	else
+		ph[i]->start_delay = 0;
+	ph[i]->usleep_done = TRUE;
 }
 
 t_philo	**ft_create_philos_mem(t_args *d)
