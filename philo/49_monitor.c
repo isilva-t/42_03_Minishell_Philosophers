@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   42_monitor.c                                       :+:      :+:    :+:   */
+/*   49_monitor.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,11 +15,11 @@
 int	ft_mtx_all_philos_eaten_all_meals(t_philo **ph, t_args *d, size_t i)
 {
 	pthread_mutex_lock(&ph[i]->mtx_eat_done);
-	if (d->nb_must_eat > 0 && ph[i]->eating_done == TRUE)
+	if (ph[i]->eating_done == TRUE)
 	{
 		ph[i]->eating_done = TRUE_VERIFYED;
 		d->all_eaten++;
-		if (d->nb_must_eat > 0 && d->all_eaten == d->nb_philos)
+		if (d->all_eaten == d->nb_philos)
 		{
 			pthread_mutex_unlock(&ph[i]->mtx_eat_done);
 			ft_stop_the_game(ph, d);
@@ -64,7 +64,9 @@ void	*ft_monitor(void *arg)
 	i = 0;
 	while (1)
 	{
-		if (ft_mtx_all_philos_eaten_all_meals(ph, d, i) == TRUE)
+		if (d->nb_must_eat < 1)
+			;
+		else if (ft_mtx_all_philos_eaten_all_meals(ph, d, i) == TRUE)
 			break ;
 		if (ft_mtx_set_if_have_philo_died(ph, d, i) == TRUE)
 			break ;

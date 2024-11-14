@@ -35,10 +35,15 @@ SRCS = \
 	  31_create_philos_mem.c \
 	  35_align_forks.c \
 	  41_let_the_game_begin.c \
-	  42_let_the_game_begin_utils.c \
-	  45_monitor.c \
+	  42_set_start_time.c \
+	  43_mtx_fts_all_tds_running.c \
+	  44_mtx_fts_forks.c \
+	  45_mtx_save_meal_time.c \
+	  46_mtx_have_reached_max_meals.c \
+	  49_monitor.c \
 	  51_mtx_have_died_philo.c \
 	  52_mtx_log.c \
+	  59_mtx_fts_usleep_and_get_time.c \
 	  61_stop_the_game.c \
 	  71_mutex_init_and_destroy.c \
 	  81_utils.c \

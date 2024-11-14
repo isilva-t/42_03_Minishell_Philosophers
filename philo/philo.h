@@ -52,19 +52,19 @@ typedef struct s_args
 	pthread_mutex_t	*mtx_fork;
 	pthread_mutex_t	mtx_log;
 	pthread_mutex_t	mtx_died;
+	size_t			is_died;
 	pthread_mutex_t	mtx_finish_dinner;
+	size_t			finish_dinner;
 	pthread_mutex_t	mtx_all_tds_running;
-	void			**ph;
 	size_t			all_tds_running;
+	void			**ph;
 	size_t			start_time;
 	size_t			nb_philos;
 	size_t			forks;
 	size_t			time_to_die;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
-	size_t			is_died;
 	size_t			all_eaten;
-	size_t			finish_dinner;
 	long			nb_must_eat;
 	int				error_philo;
 }	t_args;
@@ -90,35 +90,45 @@ typedef struct s_philo
 
 // init vars
 void	ft_init_variables(t_args *val);
-
 // 10_Argument check
 int		ft_first_args_check_have_error(int ac, char **av);
-
 // 20_parse data
 int		ft_parse_data_and_check_error(char **av, t_args *val);
 
 // 30_prepare restaurant
 t_philo	**ft_create_philos_mem(t_args *d);
-
 // 35_align_forks
 int		ft_align_forks(t_philo **ph, t_args *d);
 
-// 41_let the game begin
+// 41
 int		ft_let_the_game_begin(t_philo **ph, t_args *d);
-// 42_let_the_game_begin_utils
-int		ft_mtx_have_reached_max_meals(t_philo *ph);
-void	ft_mtx_save_meal_time(t_philo *ph);
+// 42
+void	ft_set_start_time(t_args *d, t_philo **ph);
+// 43_mtx_fts_all_tds_running
+int		ft_mtx_are_all_threads_running(t_philo *ph);
+void	ft_mtx_increase_created_threads(t_args *d);
+// 44_mtx_fts_forks
 void	ft_mtx_take_forks(t_philo *ph);
 void	ft_mtx_leave_forks(t_philo *ph);
+// 45
+void	ft_mtx_save_meal_time(t_philo *ph);
+// 46
+int		ft_mtx_have_reached_max_meals(t_philo *ph);
 
-// 45_monitor
+// 49_monitor
 void	*ft_monitor(void *arg);
 
 //50 mutex_helper_functions
+//51
 int		ft_mtx_have_died_philo(t_philo *ph);
+//52
 void	ft_log(t_philo *ph, char *what_are_doing, size_t n_philos);
+//59 mtx_fts_usleep_and_get_time
+size_t	ft_get_time(void);
+void	ft_usleep(size_t time);
+int		ft_mtx_is_usleep_loop_done(t_philo *ph, size_t ms_time);
 
-// 61_stop_the_game_
+// 61
 void	ft_stop_the_game(t_philo **ph, t_args *d);
 
 //71_mutex_init_and_destroy
@@ -129,13 +139,8 @@ int		ft_mutex_destroy(t_philo **ph, t_args *d);
 int		ft_isdigit(int c);
 size_t	ft_atol_positive(const char *nptr);
 void	ft_print_user_manual(void);
-size_t	ft_get_time(void);
-void	ft_usleep(size_t time);
-int		ft_mtx_is_usleep_loop_done(t_philo *ph, size_t ms_time);
 
 // 91_free_and_cleanup
 int		ft_free_philo_mem(t_philo **ph, t_args *d);
 
-// to delete
-void	local(char *str); // to delete
 #endif
