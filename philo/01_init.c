@@ -24,4 +24,5 @@ void	ft_init_variables(t_args *d)
 	d->error_philo = 0;
 	d->all_eaten = 0;
 	d->finish_dinner = 0;
+	d->all_tds_running = 0;
 }

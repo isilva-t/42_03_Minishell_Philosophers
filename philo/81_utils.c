@@ -59,7 +59,11 @@ size_t	ft_get_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	ft_usleep(size_t time)
+void	ft_usleep(size_t ms_time)
 {
-	usleep(time * 1000);
+	size_t	time;
+
+	time = ft_get_time();
+	while (ft_get_time() - time < ms_time)
+		usleep(500);
 }

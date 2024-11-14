@@ -62,11 +62,18 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(HEADER)
 	@echo "$(GREEN)Compilation $(CLR_RMV)of $(YELLOW)$(NAME) $(CLR_RMV)..."
-	@$(CC) $(CFLAGS) $(EFLAGS) $(T_FLAG) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(EFLAGS) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)$(NAME) created[0m ✅"
 
-te:	re
+ph:	re
 	@echo -n "./philo "; read args; ./philo $$args
+
+sanitize: EFLAGS += $(T_FLAG)
+sanitize: $(NAME)
+
+sa:	fclean	sanitize
+	@echo -n "./philo "; read args; ./philo $$args
+
 
 .PHONY: clean
 clean:

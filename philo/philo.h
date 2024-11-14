@@ -6,12 +6,16 @@
 /*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 11:49:51 by isilva-t          #+#    #+#             */
-/*   Updated: 2024/11/14 09:56:50 by isilva-t         ###   ########.fr       */
+/*   Updated: 2024/11/14 10:38:14 by isilva-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
+# ifndef TAB
+#  define TAB 0
+# endif
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -45,15 +49,13 @@
 
 typedef struct s_args
 {
-	pthread_mutex_t	*mtx_meal_time;
 	pthread_mutex_t	*mtx_fork;
-	pthread_mutex_t	is_dead_lock[2];
-	pthread_mutex_t	mtx_all_eaten;
-	pthread_mutex_t	mtx_main;
 	pthread_mutex_t	mtx_log;
-	pthread_mutex_t	mtx_finish_dinner;
 	pthread_mutex_t	mtx_died;
+	pthread_mutex_t	mtx_finish_dinner;
+	pthread_mutex_t	mtx_all_tds_running;
 	void			**ph;
+	size_t			all_tds_running;
 	size_t			start_time;
 	size_t			nb_philos;
 	size_t			forks;

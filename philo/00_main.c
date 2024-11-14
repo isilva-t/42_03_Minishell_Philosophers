@@ -47,8 +47,8 @@ int	main(int ac, char **av)
 		return (1);
 	if (ft_parse_data_and_check_error(av, &d) == TRUE)
 		return (2);
-	d.start_time = ft_get_time();
 	usleep(50);
+	d.start_time = ft_get_time();
 	ph = ft_create_philos_mem(&d);
 	if (!ph)
 		return (printf("Error: Can't create Philosophers memory.\n"), 3);

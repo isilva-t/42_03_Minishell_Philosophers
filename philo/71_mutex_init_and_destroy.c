@@ -32,6 +32,7 @@ int	ft_mutex_init(t_philo **ph, t_args *d)
 	pthread_mutex_init(&d->mtx_log, NULL);
 	pthread_mutex_init(&d->mtx_died, NULL);
 	pthread_mutex_init(&d->mtx_finish_dinner, NULL);
+	pthread_mutex_init(&d->mtx_all_tds_running, NULL);
 	return (TRUE);
 }
 
@@ -51,5 +52,6 @@ int	ft_mutex_destroy(t_philo **ph, t_args *d)
 	pthread_mutex_destroy(&d->mtx_log);
 	pthread_mutex_destroy(&d->mtx_died);
 	pthread_mutex_destroy(&d->mtx_finish_dinner);
+	pthread_mutex_destroy(&d->mtx_all_tds_running);
 	return (TRUE);
 }
