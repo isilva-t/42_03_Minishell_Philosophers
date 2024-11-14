@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   81_utils.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/14 09:51:09 by isilva-t          #+#    #+#             */
+/*   Updated: 2024/11/14 09:54:48 by isilva-t         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
-#include <pthread.h>
 
 int	ft_isdigit(int c)
 {
@@ -10,7 +21,7 @@ int	ft_isdigit(int c)
 
 size_t	ft_atol_positive(const char *nptr)
 {
-	int	i;
+	int		i;
 	size_t	num;
 
 	i = 0;
@@ -22,7 +33,7 @@ size_t	ft_atol_positive(const char *nptr)
 	return (num);
 }
 
-void	ft_print_user_manual()
+void	ft_print_user_manual(void)
 {
 	printf("\nTo start the dinner, use between FOUR or FIVE arguments.\n");
 	printf("Fifth argument is optional.\n");
@@ -42,37 +53,13 @@ void	ft_print_user_manual()
 size_t	ft_get_time(void)
 {
 	struct timeval	time;
+
 	if (gettimeofday(&time, NULL) == -1)
 		printf("gettimeofday() error\n");
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
-}
-
-void	ft_log(t_philo *ph, char *what_are_doing, size_t n_philos)
-{
-	size_t i = 0;
-
-	pthread_mutex_lock(&ph->d->mtx_died);
-	if (ph->d->is_died == FALSE)
-	{
-		pthread_mutex_lock(&ph->d->mtx_log);
-		while (i < n_philos)
-		{
-			printf("\t\t\t\t");
-			i++;
-		}
-		printf("%zu\t%d %s\n", ft_get_time() - ph->d->start_time, ph->id, what_are_doing);
-		pthread_mutex_unlock(&ph->d->mtx_log);
-	}
-	pthread_mutex_unlock(&ph->d->mtx_died);
-}
-
-void	local(char *str)
-{
-	printf("%s\n", str); //to_delete
 }
 
 void	ft_usleep(size_t time)
 {
 	usleep(time * 1000);
 }
-

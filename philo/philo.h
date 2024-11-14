@@ -6,7 +6,7 @@
 /*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 11:49:51 by isilva-t          #+#    #+#             */
-/*   Updated: 2024/11/07 14:08:27 by isilva-t         ###   ########.fr       */
+/*   Updated: 2024/11/14 09:56:50 by isilva-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,52 +40,31 @@
 
 # define THO 1000
 
-
 # define MAX_PHILO 250
 # define MIN_TIME 60
 
-// typedef struct s_table
-// {
-// 	time_t	start_time;
-// 	unsigned int	n_philos;
-// 	time_t			time_to_die;
-// 	time_t			time_to_eat;
-// 	time_t			time_to_sleep;
-// }	t_table;
-
-// typedef enum e_status
-// {
-// 	DIED = 0,
-// 	EATING = 1,
-// 	SLEEPING = 2,
-// 	THINKING = 3,
-// 	GOT_FORK_1 = 4,
-// 	GOT_FORK_2 = 5
-// }	t_status;
-
-
-typedef struct	s_args
+typedef struct s_args
 {
 	pthread_mutex_t	*mtx_meal_time;
 	pthread_mutex_t	*mtx_fork;
-	pthread_mutex_t is_dead_lock[2];
+	pthread_mutex_t	is_dead_lock[2];
 	pthread_mutex_t	mtx_all_eaten;
-	pthread_mutex_t mtx_main;
+	pthread_mutex_t	mtx_main;
 	pthread_mutex_t	mtx_log;
-	pthread_mutex_t mtx_finish_dinner;
-	pthread_mutex_t mtx_died;
-	void	**ph;
-	size_t	start_time;
-	size_t	nb_philos;
-	size_t	forks;
-	size_t	time_to_die;
-	size_t	time_to_eat;
-	size_t	time_to_sleep;
-	size_t	is_died;
-	size_t	all_eaten;
-	size_t	finish_dinner;
-	long	nb_must_eat;
-	int		error_philo;
+	pthread_mutex_t	mtx_finish_dinner;
+	pthread_mutex_t	mtx_died;
+	void			**ph;
+	size_t			start_time;
+	size_t			nb_philos;
+	size_t			forks;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	size_t			is_died;
+	size_t			all_eaten;
+	size_t			finish_dinner;
+	long			nb_must_eat;
+	int				error_philo;
 }	t_args;
 
 typedef struct s_philo
@@ -96,54 +75,61 @@ typedef struct s_philo
 	pthread_mutex_t	*first_fork;
 	pthread_mutex_t	*second_fork;
 	pthread_mutex_t	mtx_philo;
-	pthread_mutex_t mtx_eat_done;
+	pthread_mutex_t	mtx_eat_done;
 	size_t			last_meal;
 	unsigned int	n_meals;
 	unsigned int	max_meals;
 	unsigned int	eating_done;
-	size_t	n_philos;
-	size_t	start_delay;
+	size_t			n_philos;
 	t_args			*d;
 }	t_philo;
-
 
 // init vars
 void	ft_init_variables(t_args *val);
 
 // 10_Argument check
-int	ft_first_args_check_have_error(int ac, char **av);
+int		ft_first_args_check_have_error(int ac, char **av);
 
 // 20_parse data
-int	ft_parse_data_and_check_error(char **av, t_args *val);
+int		ft_parse_data_and_check_error(char **av, t_args *val);
 
 // 30_prepare restaurant
 t_philo	**ft_create_philos_mem(t_args *d);
 
-// 41_let the game begin
-int	ft_let_the_game_begin(t_philo **ph, t_args *d);
+// 35_align_forks
+int		ft_align_forks(t_philo **ph, t_args *d);
 
-// 42_monitor
+// 41_let the game begin
+int		ft_let_the_game_begin(t_philo **ph, t_args *d);
+// 42_let_the_game_begin_utils
+int		ft_mtx_have_reached_max_meals(t_philo *ph);
+void	ft_mtx_save_meal_time(t_philo *ph);
+void	ft_mtx_take_forks(t_philo *ph);
+void	ft_mtx_leave_forks(t_philo *ph);
+
+// 45_monitor
 void	*ft_monitor(void *arg);
 
+//50 mutex_helper_functions
+int		ft_mtx_have_died_philo(t_philo *ph);
+void	ft_log(t_philo *ph, char *what_are_doing, size_t n_philos);
 
 // 61_stop_the_game_
 void	ft_stop_the_game(t_philo **ph, t_args *d);
 
 //71_mutex_init_and_destroy
-int	ft_mutex_init(t_philo **ph, t_args *d);
-int	ft_mutex_destroy(t_philo **ph, t_args *d);
+int		ft_mutex_init(t_philo **ph, t_args *d);
+int		ft_mutex_destroy(t_philo **ph, t_args *d);
 
 //81_utils
-int				ft_isdigit(int c);
+int		ft_isdigit(int c);
 size_t	ft_atol_positive(const char *nptr);
-void			ft_print_user_manual();
+void	ft_print_user_manual(void);
 size_t	ft_get_time(void);
-void	ft_log(t_philo *ph, char *what_are_doing, size_t n_philos);
 void	ft_usleep(size_t time);
 
 // 91_free_and_cleanup
-int	ft_free_philo_mem(t_philo **ph, t_args *d);
-
+int		ft_free_philo_mem(t_philo **ph, t_args *d);
 
 // to delete
 void	local(char *str); // to delete

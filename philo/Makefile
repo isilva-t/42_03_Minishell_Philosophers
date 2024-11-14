@@ -18,15 +18,13 @@ CYAN	= \033[1;36m
 NAME = philo
 CC = cc
 CFLAGS = -Iincludes
-EFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
+EFLAGS = -Wall -Wextra -Werror
+T_FLAG = -fsanitize=thread
 RM	    = rm -rf
 
 ##############################
 #          FILES
 ##############################
-
-#vpath %.h includes
-#vpath %.c src
 
 HEADER = philo.h
 SRCS = \
@@ -35,8 +33,12 @@ SRCS = \
 	  11_first_args_check.c \
 	  21_parse_data.c \
 	  31_create_philos_mem.c \
+	  35_align_forks.c \
 	  41_let_the_game_begin.c \
-	  42_monitor.c \
+	  42_let_the_game_begin_utils.c \
+	  45_monitor.c \
+	  51_mtx_have_died_philo.c \
+	  52_mtx_log.c \
 	  61_stop_the_game.c \
 	  71_mutex_init_and_destroy.c \
 	  81_utils.c \
@@ -44,7 +46,6 @@ SRCS = \
 
 OBJ_DIR = obj
 OBJS = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRCS))
-
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(OBJ_DIR)
@@ -61,24 +62,20 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(HEADER)
 	@echo "$(GREEN)Compilation $(CLR_RMV)of $(YELLOW)$(NAME) $(CLR_RMV)..."
-	@$(CC) $(CFLAGS) $(EFLAGS) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(EFLAGS) $(T_FLAG) $(OBJS) -o $(NAME)
 	@echo "$(GREEN)$(NAME) created[0m ✅"
 
 te:	re
 	@echo -n "./philo "; read args; ./philo $$args
-
-hel:	re
-	@echo -n "valgrind --tool=helgrind ./philo "; read args; ./philo $$args
-
-drd:	re
-	@echo -n "valgrind --tool=drd ./philo "; read args; ./philo $$args
-
 
 .PHONY: clean
 clean:
 	@ $(RM) -f $(OBJ_DIR)
 	@ echo "$(RED)Deleting $(CYAN)$(NAME) $(CLR_RMV)objs ✅"
 
+.PHONY: norm
+norm:
+	@norminette | grep -E 'Error:|rror!'
 
 .PHONY: fclean
 fclean: clean

@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   01_init.c                                          :+:      :+:    :+:   */
+/*   51_mtx_have_died_philo.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/14 09:37:38 by isilva-t          #+#    #+#             */
-/*   Updated: 2024/11/14 09:39:45 by isilva-t         ###   ########.fr       */
+/*   Created: 2024/11/14 08:56:42 by isilva-t          #+#    #+#             */
+/*   Updated: 2024/11/14 08:58:13 by isilva-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_init_variables(t_args *d)
+int	ft_mtx_have_died_philo(t_philo *ph)
 {
-	d->nb_philos = 0;
-	d->forks = 0;
-	d->time_to_die = 0;
-	d->time_to_eat = 0;
-	d->time_to_sleep = 0;
-	d->nb_must_eat = 0;
-	d->is_died = 0;
-	d->error_philo = 0;
-	d->all_eaten = 0;
-	d->finish_dinner = 0;
+	pthread_mutex_lock(&ph->d->mtx_died);
+	if (ph->d->is_died == TRUE)
+	{
+		pthread_mutex_unlock(&ph->d->mtx_died);
+		return (TRUE);
+	}
+	pthread_mutex_unlock(&ph->d->mtx_died);
+	return (FALSE);
 }

@@ -6,19 +6,28 @@
 /*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 12:14:21 by isilva-t          #+#    #+#             */
-/*   Updated: 2024/11/07 12:15:48 by isilva-t         ###   ########.fr       */
+/*   Updated: 2024/11/14 09:43:52 by isilva-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-
-
+void	ft_init_philo_vars(t_philo **ph, t_args *d, size_t i)
+{
+	ph[i]->last_meal = d->start_time;
+	ph[i]->d = d;
+	ph[i]->index = i;
+	ph[i]->id = i + 1;
+	ph[i]->n_meals = 0;
+	ph[i]->eating_done = 0;
+	ph[i]->max_meals = d->nb_must_eat;
+	ph[i]->n_philos = d->nb_philos;
+}
 
 t_philo	**ft_create_philos_mem(t_args *d)
 {
 	t_philo	**ph;
-	size_t		i;
+	size_t	i;
 
 	ph = (t_philo **)malloc(sizeof(t_philo *) * d->nb_philos);
 	if (!ph)
@@ -34,23 +43,8 @@ t_philo	**ft_create_philos_mem(t_args *d)
 			free(ph);
 			return (NULL);
 		}
-		ph[i]->last_meal = d->start_time;
-		ph[i]->d = d;
-		ph[i]->index = i;
-		ph[i]->id = i + 1;
-		ph[i]->n_meals = 0;
-		ph[i]->eating_done = 0;
-		ph[i]->max_meals = d->nb_must_eat;
-		ph[i]->n_philos = d->nb_philos;
-
-		ph[i]->start_delay = ph[i]->id % 2 * 50; // TO TEST EVEN PHILOS
+		ft_init_philo_vars(ph, d, i);
 		i++;
 	}
-
-//	if (d->nb_philos >= 2 && d->nb_philos % 2 == 0)
-//	else if (d->nb_philos >= 3 && d->nb_philos % 2 != 0)
-//	 	; //NEEED FUNCTION FOR THIS CASE
-	
-	//need function for only one philo
 	return (ph);
 }
