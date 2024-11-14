@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <pthread.h>
 
 void	*ft_philo_dinner_plan(void *arg)
 {
@@ -41,24 +42,41 @@ void	*ft_philo_dinner_plan(void *arg)
 	return (NULL);
 }
 
+void	*ft_one_philo_case(void *arg)
+{
+	t_philo	*ph;
+
+	ph = (t_philo *)arg;
+	pthread_mutex_lock(ph->first_fork);
+	ft_log(ph, S_FORK, 1);
+	pthread_mutex_unlock(ph->first_fork);
+	return (NULL);
+}
+
 int	ft_let_the_game_begin(t_philo **ph, t_args *d)
 {
 	size_t	i;
 
 	i = 0;
-	if (d->nb_philos == 0)
+	if (d->nb_philos == 0 || d->nb_must_eat == 0)
 		return (FALSE);
-	// else if (d->nb_philos == 1)
-	// 	pthread_create(&(ph[0]->td), NULL,
-	// 		&ft_one_philo_case, (void *)ph[0]);
-	while (i < d->nb_philos)
+	else if (d->nb_philos == 1)
 	{
-		pthread_create(&(ph[i]->td), NULL,
-			&ft_philo_dinner_plan, (void *)ph[i]);
-		i++;
-		if (i == d->nb_philos)
-			ft_set_start_time(d, ph);
-		ft_mtx_increase_created_threads(d);
+		ph[0]->last_meal = ft_get_time();
+		pthread_create(&(ph[0]->td), NULL,
+			&ft_one_philo_case, (void *)ph[0]);
+	}
+	else
+	{
+		while (i < d->nb_philos)
+		{
+			pthread_create(&(ph[i]->td), NULL,
+				&ft_philo_dinner_plan, (void *)ph[i]);
+			i++;
+			if (i == d->nb_philos)
+				ft_set_start_time(d, ph);
+			ft_mtx_increase_created_threads(d);
+		}
 	}
 	return (TRUE);
 }

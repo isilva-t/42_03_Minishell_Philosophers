@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-int	ft_mtx_the_game_is_over(t_args *d, pthread_t *monitor)
+static int	ft_mtx_the_game_is_over(t_args *d, pthread_t *monitor)
 {
 	pthread_mutex_lock(&d->mtx_finish_dinner);
 	if (d->finish_dinner == TRUE)
@@ -25,7 +25,7 @@ int	ft_mtx_the_game_is_over(t_args *d, pthread_t *monitor)
 	return (FALSE);
 }
 
-void	ft_start_monitor(t_args *d)
+static void	ft_start_monitor(t_args *d)
 {
 	pthread_t	monitor;
 
@@ -47,11 +47,13 @@ int	main(int ac, char **av)
 		return (1);
 	if (ft_parse_data_and_check_error(av, &d) == TRUE)
 		return (2);
+	if (d.nb_philos == 0 || d.nb_must_eat == 0)
+		return (0);
 	usleep(50);
 	d.start_time = ft_get_time();
 	ph = ft_create_philos_mem(&d);
-	if (!ph)
-		return (printf("Error: Can't create Philosophers memory.\n"), 3);
+	if (!ph && d.nb_philos > 0)
+		return (printf("Error: Can't create Philosophers memory!\n"), 3);
 	d.ph = (void **)ph;
 	ft_mutex_init(ph, &d);
 	ft_align_forks(ph, &d);
