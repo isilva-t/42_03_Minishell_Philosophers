@@ -6,7 +6,7 @@
 /*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 07:55:33 by isilva-t          #+#    #+#             */
-/*   Updated: 2024/11/14 10:00:06 by isilva-t         ###   ########.fr       */
+/*   Updated: 2024/11/15 09:03:49 by isilva-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	ft_mtx_all_philos_eaten_all_meals(t_philo **ph, t_args *d, size_t i)
 
 int	ft_mtx_set_if_have_philo_died(t_philo **ph, t_args *d, size_t i)
 {
+	usleep(10);
 	pthread_mutex_lock(&ph[i]->mtx_philo);
 	if (ft_get_time() - ph[i]->last_meal > d->time_to_die)
 	{

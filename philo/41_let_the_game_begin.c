@@ -6,14 +6,14 @@
 /*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 09:35:45 by isilva-t          #+#    #+#             */
-/*   Updated: 2024/11/14 09:35:48 by isilva-t         ###   ########.fr       */
+/*   Updated: 2024/11/15 08:45:39 by isilva-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <pthread.h>
 
-void	*ft_philo_dinner_plan(void *arg)
+static void	*ft_philo_dinner_plan(void *arg)
 {
 	t_philo		*ph;
 
@@ -37,12 +37,11 @@ void	*ft_philo_dinner_plan(void *arg)
 		if (ft_mtx_is_usleep_loop_done(ph, ph->d->time_to_sleep) == FALSE)
 			break ;
 		ft_log(ph, S_THINKING, ph->index);
-		usleep(50);
 	}
 	return (NULL);
 }
 
-void	*ft_one_philo_case(void *arg)
+static void	*ft_one_philo_case(void *arg)
 {
 	t_philo	*ph;
 
@@ -58,6 +57,7 @@ int	ft_let_the_game_begin(t_philo **ph, t_args *d)
 	size_t	i;
 
 	i = 0;
+	d->start_time = ft_get_time();
 	if (d->nb_philos == 0 || d->nb_must_eat == 0)
 		return (FALSE);
 	else if (d->nb_philos == 1)
@@ -73,10 +73,9 @@ int	ft_let_the_game_begin(t_philo **ph, t_args *d)
 			pthread_create(&(ph[i]->td), NULL,
 				&ft_philo_dinner_plan, (void *)ph[i]);
 			i++;
-			if (i == d->nb_philos)
-				ft_set_start_time(d, ph);
-			ft_mtx_increase_created_threads(d);
 		}
+		ft_set_start_time(d, ph);
+		ft_mtx_increase_created_threads(d);
 	}
 	return (TRUE);
 }

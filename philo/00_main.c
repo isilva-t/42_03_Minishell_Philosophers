@@ -6,7 +6,7 @@
 /*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 09:35:32 by isilva-t          #+#    #+#             */
-/*   Updated: 2024/11/14 09:35:32 by isilva-t         ###   ########.fr       */
+/*   Updated: 2024/11/15 07:44:19 by isilva-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	main(int ac, char **av)
 		return (2);
 	if (d.nb_philos == 0 || d.nb_must_eat == 0)
 		return (0);
-	usleep(50);
-	d.start_time = ft_get_time();
 	ph = ft_create_philos_mem(&d);
 	if (!ph && d.nb_philos > 0)
 		return (printf("Error: Can't create Philosophers memory!\n"), 3);
