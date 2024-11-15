@@ -39,7 +39,8 @@ int	ft_mtx_is_usleep_loop_done(t_philo *ph, size_t ms_time)
 	end_time = time + ms_time;
 	while (time < end_time)
 	{
-		ft_usleep(1);
+		usleep(500);
+		//ft_usleep(1);
 		time = ft_get_time();
 		if (ft_mtx_have_died_philo(ph) == TRUE)
 			return (FALSE);

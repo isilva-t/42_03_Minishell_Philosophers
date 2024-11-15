@@ -24,18 +24,24 @@ static void	ft_print_tab(size_t n_philos)
 	}
 }
 
-void	ft_log(t_philo *ph, char *what_are_doing, size_t n_philos)
+void	ft_log(t_philo *ph, char *what_are_doing, size_t n_philos, size_t die)
 {
 	size_t	actual_time;
+	size_t	n_philos_inside;
+	size_t	die_local;
 
 	actual_time = 0;
+	n_philos_inside = n_philos;
+	die_local = die;
 	pthread_mutex_lock(&ph->d->mtx_died);
+	if (die_local == TRUE)
+		ph->d->is_died = TRUE;
 	if (ph->d->is_died == FALSE)
 	{
 		pthread_mutex_unlock(&ph->d->mtx_died);
 		pthread_mutex_lock(&ph->d->mtx_log);
 		if (TAB == 1)
-			ft_print_tab(n_philos);
+			ft_print_tab(n_philos_inside);
 		actual_time = ft_get_time() - ph->d->start_time;
 		printf("%zu\t%d %s\n", actual_time, ph->id, what_are_doing);
 		pthread_mutex_unlock(&ph->d->mtx_log);
