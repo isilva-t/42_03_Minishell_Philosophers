@@ -37,7 +37,7 @@ static void	*ft_philo_dinner_plan(void *arg)
 		if (ft_mtx_is_usleep_loop_done(ph, ph->d->time_to_sleep) == FALSE)
 			break ;
 		ft_log(ph, S_THINKING, ph->index);
-		usleep(500);
+		usleep(350);
 	}
 	return (NULL);
 }
